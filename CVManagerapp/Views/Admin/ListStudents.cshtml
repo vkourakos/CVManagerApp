@@ -1,0 +1,28 @@
+﻿@model List<ApplicationUser>
+
+<h1>List of Students</h1>
+
+<table class="table table-bordered table-striped mt-3">
+    <thead>
+        <tr>
+            <th>User Name</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model)
+        {
+            <tr>
+                <td>@student.UserName</td>
+                <td>
+                    <div class="d-flex flex-row gap-2" role="group">
+                        <a asp-controller="students" asp-action="Details" asp-route-userId="@student.Id" class="btn btn-primary">Details</a>
+                        <a asp-controller="Rentals" asp-action="studentRentalList" asp-route-studentId="@student.Id" class="btn btn-secondary">student's Rentals</a>
+
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
