@@ -31,26 +31,43 @@ namespace CVManagerapp.Controllers
 
         public IActionResult Create(string userId)
         {
-            return View();
+            var vm = new CVCreateVM
+            {
+                UserId = userId
+            };
+            return View(vm);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(string userId, CVCreateVM cVCreateVM)
+        public async Task<IActionResult> Create(CVCreateVM cVCreateVM)
         {
-            if (userId.IsNullOrEmpty())
+            if (cVCreateVM.UserId.IsNullOrEmpty())
                 return BadRequest(ModelState);
 
-            var user = await _userManager.GetUserAsync(User);
-
+            var user = await _userManager.FindByIdAsync(cVCreateVM.UserId);
             if (user == null)
                 return NotFound();
 
             if (!ModelState.IsValid)
                 return View(cVCreateVM);
 
+            var cv = new CV()
+            {
+                UserId = cVCreateVM.UserId,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Title = cVCreateVM.Title,
+                DateOfBirth = cVCreateVM.DateOfBirth,
+                Address = cVCreateVM.Address,
+                Phone = cVCreateVM.Phone
+            };
 
-            return View(cVCreateVM);
+            await _db.CVs.AddAsync(cv);
+            await _db.SaveChangesAsync();
+
+            return RedirectToAction("ListCVs");
         }
     }
 }

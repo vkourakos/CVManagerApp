@@ -21,20 +21,21 @@ namespace CVManagerapp.Models
         [StringLength(100)]
         public string LastName { get; set; }
 
+        [Required]
         [StringLength(100)]
-        public string Title { get; set; } 
-
+        public string Title { get; set; }
+        [Required]
         [DataType(DataType.Date)]
         [Display(Name = "Date of Birth")]
         public DateTime? DateOfBirth { get; set; }
-
+        [Required]
         [StringLength(100)]
         public string Address { get; set; }
-
+        [Required]
         [StringLength(100)]
         public string Email { get; set; }
-
-        [StringLength(10)]
+        [Required]
+        [RegularExpression(@"^69\d{8}$", ErrorMessage = "Phone number must start with '69' and be 10 digits long")]
         public string Phone { get; set; }
 
         

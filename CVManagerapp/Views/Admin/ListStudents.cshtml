@@ -16,9 +16,10 @@
                 <td>@student.UserName</td>
                 <td>
                     <div class="d-flex flex-row gap-2" role="group">
-                        <a asp-controller="students" asp-action="Details" asp-route-userId="@student.Id" class="btn btn-primary">Details</a>
-                        <a asp-controller="Rentals" asp-action="studentRentalList" asp-route-studentId="@student.Id" class="btn btn-secondary">student's Rentals</a>
-
+                        <a asp-controller="CV" asp-action="Details" asp-route-userId="@student.Id" class="btn btn-primary">View CV</a>
+                        <a asp-controller="CV" asp-action="Create" asp-route-userId="@student.Id" class="btn btn-primary">Create CV</a>
+                        <a asp-controller="CV" asp-action="Edit" asp-route-userId="@student.Id" class="btn btn-primary">Edit CV</a>
+                        <a asp-controller="CV" asp-action="Delete" asp-route-userId="@student.Id" class="btn btn-primary">Delete CV</a>
                     </div>
                 </td>
             </tr>
