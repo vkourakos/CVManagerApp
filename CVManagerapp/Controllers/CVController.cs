@@ -29,8 +29,16 @@ namespace CVManagerapp.Controllers
             return View(ViewModel);
         }
 
-        public IActionResult Create(string userId)
+        public async Task<IActionResult> Create(string userId)
         {
+            if (userId.IsNullOrEmpty())
+                return BadRequest(ModelState);
+
+            var cv = await _db.CVs.SingleOrDefaultAsync(x => x.UserId == userId);
+            
+            if (cv != null)
+                return BadRequest("already exists");
+
             var vm = new CVCreateVM
             {
                 UserId = userId
@@ -69,5 +77,80 @@ namespace CVManagerapp.Controllers
 
             return RedirectToAction("ListCVs");
         }
+
+
+        public async Task<IActionResult> Details(string userId)
+        {
+            // Retrieve CV details and associated models from the database
+            var cvDetails = _db.CVs
+                .Where(c => c.UserId == userId)
+                .Select(c => new CVDetailsVM
+                {
+                    CV = new CVVM
+                    {
+                        UserId = c.UserId,
+                        FirstName = c.FirstName,
+                        LastName = c.LastName,
+                        Title = c.Title,
+                        DateOfBirth = c.DateOfBirth,
+                        Address = c.Address,
+                        Email = c.Email,
+                        Phone = c.Phone
+                    },
+                    Educations = c.Educations.Select(e => new EducationVM
+                    {
+                        Institution = e.Institution,
+                        Degree = e.Degree,
+                        FieldOfStudy = e.FieldOfStudy,
+                        StartDate = e.StartDate,
+                        EndDate = e.EndDate
+                    }).ToList(),
+                    workexperiences = c.WorkExperiences.Select(e => new WorkexperienceVM
+                    {
+                        Company = e.Company,
+                        Position = e.Position,
+                        StartDate = e.StartDate,
+                        EndDate = e.EndDate,
+                        Description = e.Description,
+                    }).ToList(),
+                    skills = c.Skills.Select(e => new SkillVM
+                    {
+                        Name = e.Name                      
+                    }).ToList(),
+                    projects= c.Projects.Select(e => new ProjectVM
+                    {
+                        Title = e.Title,
+                        Description = e.Description,
+                        StartDate= e.StartDate, 
+                        EndDate= e.EndDate
+                    }).ToList(),
+                    certifications = c.Certifications.Select(e => new CertificationVM
+                    {
+                        Name= e.Name,
+                        IssueDate= e.IssueDate,
+                        IssuingOrganization= e.IssuingOrganization,
+                    }).ToList(),
+                    languages = c.Languages.Select(e => new LanguageVM
+                    {
+                        Name = e.Name,
+                        ProficiencyLevel= e.ProficiencyLevel
+                    }).ToList(),
+                    interests = c.Interests.Select(e => new InterestVM
+                    {
+                        Name = e.Name
+                    }).ToList(),
+                })
+                .FirstOrDefault();
+
+            if (cvDetails == null)
+            {
+                return NotFound();
+            }
+
+            return View(cvDetails);
+        }
+
+        
     }
 }
+    

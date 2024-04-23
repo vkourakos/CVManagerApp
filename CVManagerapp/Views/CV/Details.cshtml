@@ -1,0 +1,288 @@
+﻿@model CVManagerapp.ViewModels.CVDetailsVM
+@{
+    ViewData["Title"] = "CV Details";
+}
+
+<div class="d-flex justify-content-between align-items-center">
+    <div class="row">
+        <h1>@Model.CV.FirstName @Model.CV.LastName </h1>
+        <h5 style="margin-bottom: 0;">@Model.CV.Title</h5>
+    </div>  
+    <a class="btn btn-danger" asp-action="Delete" asp-route-userId="@Model.CV.UserId">Delete CV</a>
+</div>
+<hr />
+ 
+<div>
+    <h4>Personal Information</h4>
+    <hr? />
+    <dl class="row">
+        <dt class="col-sm-2">First Name</dt>
+        <dd class="col-sm-10">@Model.CV.FirstName</dd>
+        
+        <dt class="col-sm-2">Last Name</dt>
+        <dd class="col-sm-10">@Model.CV.LastName</dd>
+        
+        <dt class="col-sm-2">Title</dt>
+        <dd class="col-sm-10">@Model.CV.Title</dd>
+        
+        <dt class="col-sm-2">Date of Birth</dt>
+        <dd class="col-sm-10">@Model.CV.DateOfBirth</dd>
+        
+        <dt class="col-sm-2">Address</dt>
+        <dd class="col-sm-10">@Model.CV.Address</dd>
+        
+        <dt class="col-sm-2">Email</dt>
+        <dd class="col-sm-10">@Model.CV.Email</dd>
+        
+        <dt class="col-sm-2">Phone</dt>
+        <dd class="col-sm-10">@Model.CV.Phone</dd>
+        
+    </dl>
+</div>
+ 
+<div style="margin-bottom: 20px;">
+    <div class="d-flex justify-content-between align-items-center">
+        <h4 style="margin-bottom: 0;">Education</h4>
+        <a class="btn btn-primary"asp-action="AddEducation" asp-route-userId="@Model.CV.UserId">Add Education</a>
+    </div>
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Institution</th>
+                <th>Degree</th>
+                <th>Field of Study</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var education in Model.Educations)
+            {
+                <tr>
+                    <td>@education.Institution</td>
+                    <td>@education.Degree</td>
+                    <td>@education.FieldOfStudy</td>
+                    <td>@education.StartDate</td>
+                    <td>@education.EndDate</td>
+                    
+                </tr>
+            }
+            @if (!Model.Educations.Any())
+            {
+                <tr>
+                    <td colspan="5">No education entries found.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    
+</div>
+<div style="margin-bottom: 20px;">
+    <div class="d-flex justify-content-between align-items-center">
+        <h4 style="margin-bottom: 0;">Work Experience</h4>
+        <a class="btn btn-primary" asp-action="AddWorkexperience" asp-route-userId="@Model.CV.UserId">Add Work experience</a>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Company</th>
+                <th>Position</th>                
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Description</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var workexperience in Model.workexperiences)
+            {
+                <tr>
+                    <td>@workexperience.Company</td>
+                    <td>@workexperience.Position</td>
+                    <td>@workexperience.StartDate</td>
+                    <td>@workexperience.EndDate</td>
+                    <td>@workexperience.Description</td>
+
+                </tr>
+            }
+            @if (!Model.workexperiences.Any())
+            {
+                <tr>
+                    <td colspan="5">No Work experience  found.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    
+</div>
+<div style="margin-bottom: 20px;">
+    <div class="d-flex justify-content-between align-items-center">
+        <h4 style="margin-bottom: 0;">Skills</h4>
+        <a class="btn btn-primary" asp-action="AddSkill" asp-route-userId="@Model.CV.UserId">Add Skill</a>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var skill in Model.skills)
+            {
+                <tr>
+                    <td>@skill.Name</td>                   
+                </tr>
+            }
+            @if (!Model.skills.Any())
+            {
+                <tr>
+                    <td colspan="5">No skills found.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    
+</div>
+<div style="margin-bottom: 20px;">
+    <div class="d-flex justify-content-between align-items-center">
+        <h4 style="margin-bottom: 0;">Projects</h4>
+        <a class="btn btn-primary" asp-action="AddProject" asp-route-userId="@Model.CV.UserId">Add Project</a>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var project in Model.projects)
+            {
+                <tr>
+                    <td>@project.Title</td>
+                    <td>@project.Description</td>>
+                    <td>@project.StartDate</td>
+                    <td>@project.EndDate</td>
+
+                </tr>
+            }
+            @if (!Model.projects.Any())
+            {
+                <tr>
+                    <td colspan="5">No projects found.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    
+</div>
+<div style="margin-bottom: 20px;">
+    <div class="d-flex justify-content-between align-items-center">
+        <h4 style="margin-bottom: 0;">Certifications</h4>
+        <a class="btn btn-primary" asp-action="AddCertification" asp-route-userId="@Model.CV.UserId">Add Certification</a>
+    </div>
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Issue Date</th>
+                <th>Issuing Organization</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var certification in Model.certifications)
+            {
+                <tr>
+                    <td>@certification.Name</td>
+                    <td>@certification.IssueDate</td>
+                    <td>@certification.IssuingOrganization</td>
+                    
+
+                </tr>
+            }
+            @if (!Model.certifications.Any())
+            {
+                <tr>
+                    <td colspan="5">No certification found.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    
+</div>
+<div style="margin-bottom: 20px;">
+    <div class="d-flex justify-content-between align-items-center">
+        <h4 style="margin-bottom: 0;">Languages</h4>
+        <a class="btn btn-primary" asp-action="AddLanguage" asp-route-userId="@Model.CV.UserId">Add Language</a>
+    </div>
+    
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Proficiency Level</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var language in Model.languages)
+            {
+                <tr>
+                    <td>@language.Name</td>
+                    <td>@language.ProficiencyLevel</td>
+                </tr>
+            }
+            @if (!Model.languages.Any())
+            {
+                <tr>
+                    <td colspan="5">No languages found.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    
+</div>
+<div style="margin-bottom: 20px;">
+    <div class="d-flex justify-content-between align-items-center">
+        <h4 style="margin-bottom: 0;">Interests</h4>
+        <a class="btn btn-primary" asp-action="AddInterest" asp-route-userId="@Model.CV.UserId">Add Interest</a>
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var interest in Model.interests)
+            {
+                <tr>
+                    <td>@interest.Name</td>
+
+                </tr>
+            }
+            @if (!Model.interests.Any())
+            {
+                <tr>
+                    <td colspan="5">No interest entries found.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    
+</div>
+ 
+
+ 
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
