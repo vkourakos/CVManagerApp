@@ -46,6 +46,9 @@ namespace CVManagerapp.Controllers
             return View(vm);
         }
 
+
+        
+
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CVCreateVM cVCreateVM)
@@ -151,7 +154,23 @@ namespace CVManagerapp.Controllers
             return View(cvDetails);
         }
 
-        
+        public async Task<IActionResult> Delete(string userId)
+        {
+            if (userId.IsNullOrEmpty())
+                return BadRequest();
+
+            var cv = await _db.CVs.SingleAsync(c => c.UserId == userId);
+
+            if (cv == null)
+                return NotFound();
+
+            _db.CVs.Remove(cv);
+            await _db.SaveChangesAsync();
+            return RedirectToAction("ListCVs");
+        }
+       
+
+
     }
 }
     
