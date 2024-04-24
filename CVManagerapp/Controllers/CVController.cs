@@ -67,7 +67,7 @@ namespace CVManagerapp.Controllers
                 LastName = user.LastName,
                 Email = user.Email,
                 Title = cVCreateVM.Title,
-                DateOfBirth = cVCreateVM.DateOfBirth,
+                DateOfBirth = cVCreateVM.DateOfBirth.HasValue ? cVCreateVM.DateOfBirth.Value.Date : default,
                 Address = cVCreateVM.Address,
                 Phone = cVCreateVM.Phone
             };
@@ -75,7 +75,8 @@ namespace CVManagerapp.Controllers
             await _db.CVs.AddAsync(cv);
             await _db.SaveChangesAsync();
 
-            return RedirectToAction("ListCVs");
+            return RedirectToAction("Details", new { userId = cVCreateVM.UserId });
+
         }
 
 
