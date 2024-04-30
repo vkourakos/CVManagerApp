@@ -43,10 +43,10 @@
 <div style="margin-bottom: 20px;">
     <div class="d-flex justify-content-between align-items-center">
         <h4 style="margin-bottom: 0;">Education</h4>
-        <a class="btn btn-primary"asp-action="AddEducation" asp-route-userId="@Model.CV.UserId">Add Education</a>
+        <button class="btn btn-primary addRow" data-table-id="educationTable" data-row-template-id="educationRowTemplate">Add Education</button>
     </div>
-    
-    <table class="table">
+
+    <table id="educationTable" class="table">
         <thead>
             <tr>
                 <th>Institution</th>
@@ -54,7 +54,7 @@
                 <th>Field of Study</th>
                 <th>Start Date</th>
                 <th>End Date</th>
-                
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -65,26 +65,38 @@
                     <td>@education.Degree</td>
                     <td>@education.FieldOfStudy</td>
                     <td>@education.StartDate</td>
-                    <td>@education.EndDate</td>
-                    
+                    <td>@education.EndDate</td>                   
                 </tr>
             }
             @if (!Model.Educations.Any())
             {
                 <tr>
-                    <td colspan="5">No education entries found.</td>
+                    <td colspan="6">No education entries found.</td>
                 </tr>
             }
         </tbody>
     </table>
-    
+
+    <template id="educationRowTemplate" style="display: none;">
+    <tr>
+        <td><input type="text" name="Institution"></td>
+        <td><input type="text" name="Degree"></td>
+        <td><input type="text" name="FieldOfStudy"></td>
+        <td><input type="date" name="StartDate"></td>
+        <td><input type="date" name="EndDate"></td>
+        <td>
+            <button class="btn btn-success saveRow" data-save-function="saveEducation">Save</button>
+            <button class="btn btn-danger cancelRow">Cancel</button>
+        </td>
+    </tr>
+</template>
 </div>
 <div style="margin-bottom: 20px;">
     <div class="d-flex justify-content-between align-items-center">
         <h4 style="margin-bottom: 0;">Work Experience</h4>
-        <a class="btn btn-primary" asp-action="AddWorkexperience" asp-route-userId="@Model.CV.UserId">Add Work experience</a>
+        <button class="btn btn-primary addRow" data-table-id="workExperienceTable" data-row-template-id="workExperienceRowTemplate">Add Work Experience</button>
     </div>
-    <table class="table">
+    <table id="workExperienceTable" class="table">
         <thead>
             <tr>
                 <th>Company</th>
@@ -115,6 +127,19 @@
             }
         </tbody>
     </table>
+    <template id="workExperienceRowTemplate" style="display: none;">
+        <tr>
+            <td><input type="text" name="Company"></td>
+            <td><input type="text" name="Position"></td>
+            <td><input type="date" name="StartDate"></td>
+            <td><input type="date" name="EndDate"></td>
+            <td><input type="text" name="Description"></td>
+            <td>
+                <button class="btn btn-success saveRow" data-save-function="saveWorkExperience">Save</button>
+                <button class="btn btn-danger cancelRow">Cancel</button>
+            </td>
+        </tr>
+    </template>
     
 </div>
 <div style="margin-bottom: 20px;">
@@ -284,5 +309,8 @@
 
  
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script src="~/js/details.js"></script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

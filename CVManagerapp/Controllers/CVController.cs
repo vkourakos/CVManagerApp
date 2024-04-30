@@ -168,8 +168,32 @@ namespace CVManagerapp.Controllers
             await _db.SaveChangesAsync();
             return RedirectToAction("ListCVs");
         }
-       
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddEducation(string userId, [FromBody] EducationVM educationVM)
+        {
+            if (string.IsNullOrEmpty(userId) || educationVM == null)
+                return BadRequest();
+
+            var cv = await _db.CVs.FirstOrDefaultAsync(c => c.UserId == userId);
+            if (cv == null)
+                return NotFound();
+
+            var education = new Education
+            {
+                Institution = educationVM.Institution,
+                Degree = educationVM.Degree,
+                FieldOfStudy = educationVM.FieldOfStudy,
+                StartDate = educationVM.StartDate,
+                EndDate = educationVM.EndDate
+            };
+
+            cv.Educations.Add(education);
+            await _db.SaveChangesAsync();
+
+            return Json(new { success = true });
+        }
 
     }
 }
