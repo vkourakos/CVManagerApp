@@ -85,8 +85,9 @@
         <td><input type="date" name="StartDate"></td>
         <td><input type="date" name="EndDate"></td>
         <td>
-            <button class="btn btn-success saveRow" data-save-function="saveEducation">Save</button>
-            <button class="btn btn-danger cancelRow">Cancel</button>
+                <i class="bi bi-floppy saveRow" data-save-function="saveEducation" style="cursor: pointer; margin-right: 10px;"></i>
+                <i class="bi bi-x-circle-fill cancelRow" style="cursor: pointer;"></i>
+
         </td>
     </tr>
 </template>
@@ -104,6 +105,7 @@
                 <th>Start Date</th>
                 <th>End Date</th>
                 <th>Description</th>
+                <th>Action</th>
 
             </tr>
         </thead>
@@ -135,8 +137,9 @@
             <td><input type="date" name="EndDate"></td>
             <td><input type="text" name="Description"></td>
             <td>
-                <button class="btn btn-success saveRow" data-save-function="saveWorkExperience">Save</button>
-                <button class="btn btn-danger cancelRow">Cancel</button>
+                <i class="bi bi-floppy saveRow" data-save-function="saveWorkExperience" style="cursor: pointer; margin-right: 10px;"></i>
+                <i class="bi bi-x-circle-fill cancelRow" style="cursor: pointer;"></i>
+
             </td>
         </tr>
     </template>
@@ -145,13 +148,13 @@
 <div style="margin-bottom: 20px;">
     <div class="d-flex justify-content-between align-items-center">
         <h4 style="margin-bottom: 0;">Skills</h4>
-        <a class="btn btn-primary" asp-action="AddSkill" asp-route-userId="@Model.CV.UserId">Add Skill</a>
+        <button class="btn btn-primary addRow" data-table-id="skillTable" data-row-template-id="skillRowTemplate">Add Skill</button>
     </div>
-    <table class="table">
+    <table id="skillTable" class="table">
         <thead>
             <tr>
                 <th>Name</th>
-                
+                <th>Action</th>
 
             </tr>
         </thead>
@@ -170,21 +173,30 @@
             }
         </tbody>
     </table>
-    
+    <template id="skillRowTemplate" style="display: none;">
+        <tr>
+            <td><input type="text" name="Name"></td>          
+            <td>
+                <i class="bi bi-floppy saveRow" data-save-function="saveSkill" style="cursor: pointer; margin-right: 10px;"></i>
+                <i class="bi bi-x-circle-fill cancelRow" style="cursor: pointer;"></i>
+
+            </td>
+        </tr>
+    </template>
 </div>
 <div style="margin-bottom: 20px;">
     <div class="d-flex justify-content-between align-items-center">
         <h4 style="margin-bottom: 0;">Projects</h4>
-        <a class="btn btn-primary" asp-action="AddProject" asp-route-userId="@Model.CV.UserId">Add Project</a>
+        <button class="btn btn-primary addRow" data-table-id="projectTable" data-row-template-id="projectRowTemplate">Add Project</button>
     </div>
-    <table class="table">
+    <table id="projectTable" class="table">
         <thead>
             <tr>
                 <th>Title</th>
                 <th>Description</th>
                 <th>Start Date</th>
                 <th>End Date</th>
-
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -206,21 +218,33 @@
             }
         </tbody>
     </table>
-    
+    <template id="projectRowTemplate" style="display: none;">
+        <tr>
+            <td><input type="text" name="Title"></td>
+            <td><input type="text" name="Description"></td>
+            <td><input type="date" name="StartDate"></td>
+            <td><input type="date" name="EndDate"></td>           
+            <td>
+                <i class="bi bi-floppy saveRow" data-save-function="saveProject" style="cursor: pointer; margin-right: 10px;"></i>
+                <i class="bi bi-x-circle-fill cancelRow" style="cursor: pointer;"></i>
+
+            </td>
+        </tr>
+    </template>
 </div>
 <div style="margin-bottom: 20px;">
     <div class="d-flex justify-content-between align-items-center">
         <h4 style="margin-bottom: 0;">Certifications</h4>
-        <a class="btn btn-primary" asp-action="AddCertification" asp-route-userId="@Model.CV.UserId">Add Certification</a>
+        <button class="btn btn-primary addRow" data-table-id="certificationTable" data-row-template-id="certificationRowTemplate">Add Certification</button>
     </div>
     
-    <table class="table">
+    <table id="certificationTable" class="table">
         <thead>
             <tr>
                 <th>Name</th>
                 <th>Issue Date</th>
                 <th>Issuing Organization</th>
-
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -242,19 +266,31 @@
             }
         </tbody>
     </table>
-    
+    <template id="certificationRowTemplate" style="display: none;">
+        <tr>
+            <td><input type="text" name="Name"></td>
+            <td><input type="date" name="IssueDate"></td>
+            <td><input type="text" name="IssuingOrganization"></td>
+            <td>
+                <i class="bi bi-floppy saveRow" data-save-function="saveCertification" style="cursor: pointer; margin-right: 10px;"></i>
+                <i class="bi bi-x-circle-fill cancelRow" style="cursor: pointer;"></i>
+
+            </td>
+        </tr>
+    </template>
 </div>
 <div style="margin-bottom: 20px;">
     <div class="d-flex justify-content-between align-items-center">
         <h4 style="margin-bottom: 0;">Languages</h4>
-        <a class="btn btn-primary" asp-action="AddLanguage" asp-route-userId="@Model.CV.UserId">Add Language</a>
+        <button class="btn btn-primary addRow" data-table-id="languageTable" data-row-template-id="languageRowTemplate">Add Language</button>
     </div>
     
-    <table class="table">
+    <table id="languageTable" class="table">
         <thead>
             <tr>
                 <th>Name</th>
                 <th>Proficiency Level</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -273,18 +309,28 @@
             }
         </tbody>
     </table>
-    
+    <template id="languageRowTemplate" style="display: none;">
+        <tr>
+            <td><input type="text" name="Name"></td>
+            <td><input type="text" name="ProficiencyLevel"></td>            
+            <td>
+                <i class="bi bi-floppy saveRow" data-save-function="saveLanguage" style="cursor: pointer; margin-right: 10px;"></i>
+                <i class="bi bi-x-circle-fill cancelRow" style="cursor: pointer;"></i>
+
+            </td>
+        </tr>
+    </template>
 </div>
 <div style="margin-bottom: 20px;">
     <div class="d-flex justify-content-between align-items-center">
         <h4 style="margin-bottom: 0;">Interests</h4>
-        <a class="btn btn-primary" asp-action="AddInterest" asp-route-userId="@Model.CV.UserId">Add Interest</a>
+        <button class="btn btn-primary addRow" data-table-id="interestTable" data-row-template-id="interestRowTemplate">Add Interest</button>
     </div>
-    <table class="table">
+    <table id="interestTable" class="table">
         <thead>
             <tr>
                 <th>Name</th>
-                
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
@@ -303,7 +349,16 @@
             }
         </tbody>
     </table>
-    
+    <template id="interestRowTemplate" style="display: none;">
+        <tr>
+            <td><input type="text" name="Name"></td>
+            <td>
+                <i class="bi bi-floppy saveRow" data-save-function="saveInterest" style="cursor: pointer; margin-right: 10px;"></i>
+                <i class="bi bi-x-circle-fill cancelRow" style="cursor: pointer;"></i>
+
+            </td>
+        </tr>
+    </template>
 </div>
  
 
