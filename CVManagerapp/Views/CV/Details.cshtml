@@ -7,45 +7,46 @@
     <div class="row">
         <h1>@Model.CV.FirstName @Model.CV.LastName </h1>
         <h5 style="margin-bottom: 0;">@Model.CV.Title</h5>
-    </div>  
+    </div>
     <a class="btn btn-danger" asp-action="Delete" asp-route-userId="@Model.CV.UserId">Delete CV</a>
 </div>
 <hr />
- 
+
 <div>
     <h4>Personal Information</h4>
-    <hr? />
+    <hr />
     <dl class="row">
         <dt class="col-sm-2">First Name</dt>
         <dd class="col-sm-10">@Model.CV.FirstName</dd>
-        
+
         <dt class="col-sm-2">Last Name</dt>
         <dd class="col-sm-10">@Model.CV.LastName</dd>
-        
+
         <dt class="col-sm-2">Title</dt>
         <dd class="col-sm-10">@Model.CV.Title</dd>
-        
+
         <dt class="col-sm-2">Date of Birth</dt>
         <dd class="col-sm-10">@Model.CV.DateOfBirth</dd>
-        
+
         <dt class="col-sm-2">Address</dt>
         <dd class="col-sm-10">@Model.CV.Address</dd>
-        
+
         <dt class="col-sm-2">Email</dt>
         <dd class="col-sm-10">@Model.CV.Email</dd>
-        
+
         <dt class="col-sm-2">Phone</dt>
         <dd class="col-sm-10">@Model.CV.Phone</dd>
-        
+
     </dl>
 </div>
- 
+
 <div style="margin-bottom: 20px;">
     <div class="d-flex justify-content-between align-items-center">
         <h4 style="margin-bottom: 0;">Education</h4>
-        <button class="btn btn-primary addRow" data-table-id="educationTable" data-row-template-id="educationRowTemplate">Add Education</button>
+        <button class="btn btn-primary addRow" id="addEducationBtn" data-table-id="educationTable" data-row-template-id="educationRowTemplate">Add Education</button>
     </div>
-
+    @* <form id="educationForm"> *@
+    <input value="@Model.CV.Id" type="hidden" id="CVId" name="CVId" />
     <table id="educationTable" class="table">
         <thead>
             <tr>
@@ -65,43 +66,44 @@
                     <td>@education.Degree</td>
                     <td>@education.FieldOfStudy</td>
                     <td>@education.StartDate</td>
-                    <td>@education.EndDate</td>                   
+                    <td>@education.EndDate</td>
                 </tr>
             }
             @if (!Model.Educations.Any())
             {
-                <tr>
-                    <td colspan="6">No education entries found.</td>
+                <tr id="noEntriesRow">
+                    <td colspan="5">No Education entries  found.</td>
                 </tr>
             }
+
         </tbody>
     </table>
 
     <template id="educationRowTemplate" style="display: none;">
-    <tr>
-        <td><input type="text" name="Institution"></td>
-        <td><input type="text" name="Degree"></td>
-        <td><input type="text" name="FieldOfStudy"></td>
-        <td><input type="date" name="StartDate"></td>
-        <td><input type="date" name="EndDate"></td>
-        <td>
+        <tr>
+            <td><input type="text" name="Institution" required></td>
+            <td><input type="text" name="Degree" required></td>
+            <td><input type="text" name="FieldOfStudy" required></td>
+            <td><input type="date" name="StartDate" required></td>
+            <td><input type="date" name="EndDate" required></td>
+            <td>
                 <i class="bi bi-floppy saveRow" data-save-function="saveEducation" style="cursor: pointer; margin-right: 10px;"></i>
                 <i class="bi bi-x-circle-fill cancelRow" style="cursor: pointer;"></i>
-
-        </td>
-    </tr>
-</template>
+            </td>
+        </tr>
+    </template>
+    @* </form> *@
 </div>
 <div style="margin-bottom: 20px;">
     <div class="d-flex justify-content-between align-items-center">
         <h4 style="margin-bottom: 0;">Work Experience</h4>
-        <button class="btn btn-primary addRow" data-table-id="workExperienceTable" data-row-template-id="workExperienceRowTemplate">Add Work Experience</button>
+        <button class="btn btn-primary addRow" id="addWorkExperienceBtn" data-table-id="workExperienceTable" data-row-template-id="workExperienceRowTemplate">Add Work Experience</button>
     </div>
     <table id="workExperienceTable" class="table">
         <thead>
             <tr>
                 <th>Company</th>
-                <th>Position</th>                
+                <th>Position</th>
                 <th>Start Date</th>
                 <th>End Date</th>
                 <th>Description</th>
@@ -123,8 +125,8 @@
             }
             @if (!Model.workexperiences.Any())
             {
-                <tr>
-                    <td colspan="5">No Work experience  found.</td>
+                <tr id="noEntriesRow">
+                    <td colspan="5">No Work experience found.</td>
                 </tr>
             }
         </tbody>
@@ -143,12 +145,12 @@
             </td>
         </tr>
     </template>
-    
+
 </div>
 <div style="margin-bottom: 20px;">
     <div class="d-flex justify-content-between align-items-center">
         <h4 style="margin-bottom: 0;">Skills</h4>
-        <button class="btn btn-primary addRow" data-table-id="skillTable" data-row-template-id="skillRowTemplate">Add Skill</button>
+        <button class="btn btn-primary addRow" id="addSkillBtn" data-table-id="skillTable" data-row-template-id="skillRowTemplate">Add Skill</button>
     </div>
     <table id="skillTable" class="table">
         <thead>
@@ -162,12 +164,12 @@
             @foreach (var skill in Model.skills)
             {
                 <tr>
-                    <td>@skill.Name</td>                   
+                    <td>@skill.Name</td>
                 </tr>
             }
             @if (!Model.skills.Any())
             {
-                <tr>
+                <tr id="noEntriesRow">
                     <td colspan="5">No skills found.</td>
                 </tr>
             }
@@ -175,7 +177,7 @@
     </table>
     <template id="skillRowTemplate" style="display: none;">
         <tr>
-            <td><input type="text" name="Name"></td>          
+            <td><input type="text" name="Name"></td>
             <td>
                 <i class="bi bi-floppy saveRow" data-save-function="saveSkill" style="cursor: pointer; margin-right: 10px;"></i>
                 <i class="bi bi-x-circle-fill cancelRow" style="cursor: pointer;"></i>
@@ -187,7 +189,7 @@
 <div style="margin-bottom: 20px;">
     <div class="d-flex justify-content-between align-items-center">
         <h4 style="margin-bottom: 0;">Projects</h4>
-        <button class="btn btn-primary addRow" data-table-id="projectTable" data-row-template-id="projectRowTemplate">Add Project</button>
+        <button class="btn btn-primary addRow" id="addProjectBtn" data-table-id="projectTable" data-row-template-id="projectRowTemplate">Add Project</button>
     </div>
     <table id="projectTable" class="table">
         <thead>
@@ -212,7 +214,7 @@
             }
             @if (!Model.projects.Any())
             {
-                <tr>
+                <tr id="noEntriesRow">
                     <td colspan="5">No projects found.</td>
                 </tr>
             }
@@ -223,7 +225,7 @@
             <td><input type="text" name="Title"></td>
             <td><input type="text" name="Description"></td>
             <td><input type="date" name="StartDate"></td>
-            <td><input type="date" name="EndDate"></td>           
+            <td><input type="date" name="EndDate"></td>
             <td>
                 <i class="bi bi-floppy saveRow" data-save-function="saveProject" style="cursor: pointer; margin-right: 10px;"></i>
                 <i class="bi bi-x-circle-fill cancelRow" style="cursor: pointer;"></i>
@@ -235,9 +237,9 @@
 <div style="margin-bottom: 20px;">
     <div class="d-flex justify-content-between align-items-center">
         <h4 style="margin-bottom: 0;">Certifications</h4>
-        <button class="btn btn-primary addRow" data-table-id="certificationTable" data-row-template-id="certificationRowTemplate">Add Certification</button>
+        <button class="btn btn-primary addRow" id="addCertificationBtn" data-table-id="certificationTable" data-row-template-id="certificationRowTemplate">Add Certification</button>
     </div>
-    
+
     <table id="certificationTable" class="table">
         <thead>
             <tr>
@@ -254,14 +256,14 @@
                     <td>@certification.Name</td>
                     <td>@certification.IssueDate</td>
                     <td>@certification.IssuingOrganization</td>
-                    
+
 
                 </tr>
             }
             @if (!Model.certifications.Any())
             {
-                <tr>
-                    <td colspan="5">No certification found.</td>
+                <tr id="noEntriesRow">
+                    <td colspan="5">No certifications found.</td>
                 </tr>
             }
         </tbody>
@@ -282,9 +284,9 @@
 <div style="margin-bottom: 20px;">
     <div class="d-flex justify-content-between align-items-center">
         <h4 style="margin-bottom: 0;">Languages</h4>
-        <button class="btn btn-primary addRow" data-table-id="languageTable" data-row-template-id="languageRowTemplate">Add Language</button>
+        <button class="btn btn-primary addRow" id="addLanguageBtn" data-table-id="languageTable" data-row-template-id="languageRowTemplate">Add Language</button>
     </div>
-    
+
     <table id="languageTable" class="table">
         <thead>
             <tr>
@@ -303,7 +305,7 @@
             }
             @if (!Model.languages.Any())
             {
-                <tr>
+                <tr id="noEntriesRow">
                     <td colspan="5">No languages found.</td>
                 </tr>
             }
@@ -312,7 +314,7 @@
     <template id="languageRowTemplate" style="display: none;">
         <tr>
             <td><input type="text" name="Name"></td>
-            <td><input type="text" name="ProficiencyLevel"></td>            
+            <td><input type="text" name="ProficiencyLevel"></td>
             <td>
                 <i class="bi bi-floppy saveRow" data-save-function="saveLanguage" style="cursor: pointer; margin-right: 10px;"></i>
                 <i class="bi bi-x-circle-fill cancelRow" style="cursor: pointer;"></i>
@@ -324,7 +326,7 @@
 <div style="margin-bottom: 20px;">
     <div class="d-flex justify-content-between align-items-center">
         <h4 style="margin-bottom: 0;">Interests</h4>
-        <button class="btn btn-primary addRow" data-table-id="interestTable" data-row-template-id="interestRowTemplate">Add Interest</button>
+        <button class="btn btn-primary addRow" id="addInterestBtn" data-table-id="interestTable" data-row-template-id="interestRowTemplate">Add Interest</button>
     </div>
     <table id="interestTable" class="table">
         <thead>
@@ -343,7 +345,7 @@
             }
             @if (!Model.interests.Any())
             {
-                <tr>
+                <tr id="noEntriesRow">
                     <td colspan="5">No interest entries found.</td>
                 </tr>
             }
@@ -360,11 +362,13 @@
         </tr>
     </template>
 </div>
- 
 
- 
+
+
 @section Scripts {
     <script src="~/js/details.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js" integrity="sha512-rstIgDs0xPgmG6RX1Aba4KV5cWJbAMcvRCVmglpam9SoHZiUCyQVDdH2LPlxoHtrv17XWblE/V/PP+Tr04hbtA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js" integrity="sha512-xq+Vm8jC94ynOikewaQXMEkJIOBp7iArs3IhFWSWdRT3Pq8wFz46p+ZDFAR7kHnSFf+zUv52B3prRYnbDRdgog==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }

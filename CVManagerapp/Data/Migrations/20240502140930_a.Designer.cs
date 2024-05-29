@@ -4,6 +4,7 @@ using CVManagerapp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CVManagerapp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240502140930_a")]
+    partial class a
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -159,10 +162,10 @@ namespace CVManagerapp.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CVId")
+                    b.Property<int?>("CVId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("IssueDate")
+                    b.Property<DateTime?>("IssueDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("IssuingOrganization")
@@ -188,7 +191,7 @@ namespace CVManagerapp.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CVId")
+                    b.Property<int?>("CVId")
                         .HasColumnType("int");
 
                     b.Property<string>("Degree")
@@ -224,7 +227,7 @@ namespace CVManagerapp.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CVId")
+                    b.Property<int?>("CVId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -246,7 +249,7 @@ namespace CVManagerapp.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CVId")
+                    b.Property<int?>("CVId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -272,17 +275,17 @@ namespace CVManagerapp.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CVId")
+                    b.Property<int?>("CVId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("EndDate")
+                    b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("StartDate")
+                    b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
@@ -304,7 +307,7 @@ namespace CVManagerapp.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CVId")
+                    b.Property<int?>("CVId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -326,7 +329,7 @@ namespace CVManagerapp.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CVId")
+                    b.Property<int?>("CVId")
                         .HasColumnType("int");
 
                     b.Property<string>("Company")
@@ -337,14 +340,14 @@ namespace CVManagerapp.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("EndDate")
+                    b.Property<DateTime?>("EndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Position")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("StartDate")
+                    b.Property<DateTime?>("StartDate")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
@@ -504,79 +507,51 @@ namespace CVManagerapp.Data.Migrations
 
             modelBuilder.Entity("CVManagerapp.Models.Certification", b =>
                 {
-                    b.HasOne("CVManagerapp.Models.CV", "CV")
+                    b.HasOne("CVManagerapp.Models.CV", null)
                         .WithMany("Certifications")
-                        .HasForeignKey("CVId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CV");
+                        .HasForeignKey("CVId");
                 });
 
             modelBuilder.Entity("CVManagerapp.Models.Education", b =>
                 {
-                    b.HasOne("CVManagerapp.Models.CV", "CV")
+                    b.HasOne("CVManagerapp.Models.CV", null)
                         .WithMany("Educations")
-                        .HasForeignKey("CVId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CV");
+                        .HasForeignKey("CVId");
                 });
 
             modelBuilder.Entity("CVManagerapp.Models.Interest", b =>
                 {
-                    b.HasOne("CVManagerapp.Models.CV", "CV")
+                    b.HasOne("CVManagerapp.Models.CV", null)
                         .WithMany("Interests")
-                        .HasForeignKey("CVId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CV");
+                        .HasForeignKey("CVId");
                 });
 
             modelBuilder.Entity("CVManagerapp.Models.Language", b =>
                 {
-                    b.HasOne("CVManagerapp.Models.CV", "CV")
+                    b.HasOne("CVManagerapp.Models.CV", null)
                         .WithMany("Languages")
-                        .HasForeignKey("CVId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CV");
+                        .HasForeignKey("CVId");
                 });
 
             modelBuilder.Entity("CVManagerapp.Models.Project", b =>
                 {
-                    b.HasOne("CVManagerapp.Models.CV", "CV")
+                    b.HasOne("CVManagerapp.Models.CV", null)
                         .WithMany("Projects")
-                        .HasForeignKey("CVId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CV");
+                        .HasForeignKey("CVId");
                 });
 
             modelBuilder.Entity("CVManagerapp.Models.Skill", b =>
                 {
-                    b.HasOne("CVManagerapp.Models.CV", "CV")
+                    b.HasOne("CVManagerapp.Models.CV", null)
                         .WithMany("Skills")
-                        .HasForeignKey("CVId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CV");
+                        .HasForeignKey("CVId");
                 });
 
             modelBuilder.Entity("CVManagerapp.Models.WorkExperience", b =>
                 {
-                    b.HasOne("CVManagerapp.Models.CV", "CV")
+                    b.HasOne("CVManagerapp.Models.CV", null)
                         .WithMany("WorkExperiences")
-                        .HasForeignKey("CVId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("CV");
+                        .HasForeignKey("CVId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

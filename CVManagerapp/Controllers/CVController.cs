@@ -92,6 +92,7 @@ namespace CVManagerapp.Controllers
                 {
                     CV = new CVVM
                     {
+                        Id = c.Id,
                         UserId = c.UserId,
                         FirstName = c.FirstName,
                         LastName = c.LastName,
@@ -109,7 +110,7 @@ namespace CVManagerapp.Controllers
                         StartDate = e.StartDate,
                         EndDate = e.EndDate
                     }).ToList(),
-                    workexperiences = c.WorkExperiences.Select(e => new WorkexperienceVM
+                    workexperiences = c.WorkExperiences.Select(e => new WorkExperienceVM
                     {
                         Company = e.Company,
                         Position = e.Position,
@@ -170,30 +171,186 @@ namespace CVManagerapp.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> AddEducation(string userId, [FromBody] EducationVM educationVM)
-        {
-            if (string.IsNullOrEmpty(userId) || educationVM == null)
-                return BadRequest();
+        public JsonResult AddEducation(EducationVM model)
+        {  
+            if (!ModelState.IsValid)
+                return Json(new { success = false, message = "Validation failed" });
 
-            var cv = await _db.CVs.FirstOrDefaultAsync(c => c.UserId == userId);
-            if (cv == null)
-                return NotFound();
+            try
+            {               
+                var education = new Education
+                {
+                    CVId = model.CVId,
+                    Institution = model.Institution,
+                    Degree = model.Degree,
+                    FieldOfStudy = model.FieldOfStudy,
+                    StartDate = model.StartDate,
+                    EndDate = model.EndDate
+                };
+                _db.Educations.Add(education);
+                _db.SaveChanges();
 
-            var education = new Education
+                return Json(new { success = true, message = "Education added successfully" });
+            }
+            catch (Exception ex)
             {
-                Institution = educationVM.Institution,
-                Degree = educationVM.Degree,
-                FieldOfStudy = educationVM.FieldOfStudy,
-                StartDate = educationVM.StartDate,
-                EndDate = educationVM.EndDate
-            };
-
-            cv.Educations.Add(education);
-            await _db.SaveChangesAsync();
-
-            return Json(new { success = true });
+                return Json(new { success = false, message = "An error occurred while adding education: " + ex.Message });
+            }
         }
+        [HttpPost]
+        public JsonResult AddWorkExperience(WorkExperienceVM model)
+        {
+            if (!ModelState.IsValid)
+                return Json(new { success = false, message = "Validation failed" });
+
+            try
+            {
+                var workExperience = new WorkExperience
+                {
+                    CVId = model.CVId,
+                    Company = model.Company,
+                    Position = model.Position,
+                    Description = model.Description,
+                    StartDate = model.StartDate,
+                    EndDate = model.EndDate
+                };
+                _db.WorkExperiences.Add(workExperience);
+                _db.SaveChanges();
+
+                return Json(new { success = true, message = "Work Experience added successfully" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred while adding Work Experience: " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult AddSkill(SkillVM model)
+        {
+            if (!ModelState.IsValid)
+                return Json(new { success = false, message = "Validation failed" });
+
+            try
+            {
+                var skill = new Skill
+                {
+                    CVId = model.CVId,
+                    Name= model.Name,
+                };
+                _db.Skills.Add(skill);
+                _db.SaveChanges();
+
+                return Json(new { success = true, message = "Skill added successfully" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred while adding skill: " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult AddProject(ProjectVM model)
+        {
+            if (!ModelState.IsValid)
+                return Json(new { success = false, message = "Validation failed" });
+
+            try
+            {
+                var project = new Project
+                {
+                    CVId = model.CVId,
+                    Title = model.Title,
+                    Description = model.Description,
+                    StartDate = model.StartDate,
+                    EndDate = model.EndDate
+                };
+                _db.Projects.Add(project);
+                _db.SaveChanges();
+
+                return Json(new { success = true, message = "Project added successfully" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred while adding project: " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult AddCertification(CertificationVM model)
+        {
+            if (!ModelState.IsValid)
+                return Json(new { success = false, message = "Validation failed" });
+
+            try
+            {
+                var certification = new Certification
+                {
+                    CVId = model.CVId,
+                    Name = model.Name,
+                    IssueDate = model.IssueDate,
+                    IssuingOrganization = model.IssuingOrganization,
+                };
+                _db.Certifications.Add(certification);
+                _db.SaveChanges();
+
+                return Json(new { success = true, message = "Certification added successfully" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred while adding Certification: " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult AddLanguage(LanguageVM model)
+        {
+            if (!ModelState.IsValid)
+                return Json(new { success = false, message = "Validation failed" });
+
+            try
+            {
+                var language = new Language
+                {
+                    CVId = model.CVId,
+                    Name = model.Name,
+                    ProficiencyLevel = model.ProficiencyLevel,
+                };
+                _db.Languages.Add(language);
+                _db.SaveChanges();
+
+                return Json(new { success = true, message = "Language added successfully" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred while adding Language: " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public JsonResult AddInterest(InterestVM model)
+        {
+            if (!ModelState.IsValid)
+                return Json(new { success = false, message = "Validation failed" });
+
+            try
+            {
+                var interest = new Interest
+                {
+                    CVId = model.CVId,
+                    Name = model.Name,
+                };
+                _db.Interests.Add(interest);
+                _db.SaveChanges();
+
+                return Json(new { success = true, message = "Interest added successfully" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred while adding Interest: " + ex.Message });
+            }
+        }
+
 
     }
 }
