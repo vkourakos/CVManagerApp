@@ -30,7 +30,7 @@
         var data = {
             CVId: $('#CVId').val()
         };
-
+        var url = '';
         switch (tableId) {
             case 'educationTable':
                 data.Institution = row.find('input[name="Institution"]').val();
@@ -98,9 +98,14 @@
                     }
                     newRow += '<td></td></tr>';
                     $('#' + tableId + ' tbody').append(newRow);
-                    $('.addRow').prop('disabled', false);  // Enable all add buttons
+                    $('.addRow').prop('disabled', false);  
                 } else {
-                    alert('Error saving entry.');
+                    var errorHtml = '<ul>';
+                    response.errors.forEach(function (error) {
+                        errorHtml += '<li>' + error + '</li>';
+                    });
+                    errorHtml += '</ul>';
+                    row.find('.validationErrors').html(errorHtml);
                 }
             },
             error: function () {

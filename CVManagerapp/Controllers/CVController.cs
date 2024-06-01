@@ -174,7 +174,12 @@ namespace CVManagerapp.Controllers
         public JsonResult AddEducation(EducationVM model)
         {  
             if (!ModelState.IsValid)
-                return Json(new { success = false, message = "Validation failed" });
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                                       .Select(e => e.ErrorMessage)
+                                       .ToList();
+                return Json(new { success = false, errors = errors });
+            }            
 
             try
             {               
@@ -201,7 +206,12 @@ namespace CVManagerapp.Controllers
         public JsonResult AddWorkExperience(WorkExperienceVM model)
         {
             if (!ModelState.IsValid)
-                return Json(new { success = false, message = "Validation failed" });
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                                       .Select(e => e.ErrorMessage)
+                                       .ToList();
+                return Json(new { success = false, errors = errors });
+            }
 
             try
             {
@@ -229,7 +239,12 @@ namespace CVManagerapp.Controllers
         public JsonResult AddSkill(SkillVM model)
         {
             if (!ModelState.IsValid)
-                return Json(new { success = false, message = "Validation failed" });
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                                       .Select(e => e.ErrorMessage)
+                                       .ToList();
+                return Json(new { success = false, errors = errors });
+            }
 
             try
             {
@@ -253,7 +268,12 @@ namespace CVManagerapp.Controllers
         public JsonResult AddProject(ProjectVM model)
         {
             if (!ModelState.IsValid)
-                return Json(new { success = false, message = "Validation failed" });
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                                       .Select(e => e.ErrorMessage)
+                                       .ToList();
+                return Json(new { success = false, errors = errors });
+            }
 
             try
             {
@@ -280,7 +300,12 @@ namespace CVManagerapp.Controllers
         public JsonResult AddCertification(CertificationVM model)
         {
             if (!ModelState.IsValid)
-                return Json(new { success = false, message = "Validation failed" });
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                                       .Select(e => e.ErrorMessage)
+                                       .ToList();
+                return Json(new { success = false, errors = errors });
+            }
 
             try
             {
@@ -306,7 +331,12 @@ namespace CVManagerapp.Controllers
         public JsonResult AddLanguage(LanguageVM model)
         {
             if (!ModelState.IsValid)
-                return Json(new { success = false, message = "Validation failed" });
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                                       .Select(e => e.ErrorMessage)
+                                       .ToList();
+                return Json(new { success = false, errors = errors });
+            }
 
             try
             {
@@ -331,7 +361,12 @@ namespace CVManagerapp.Controllers
         public JsonResult AddInterest(InterestVM model)
         {
             if (!ModelState.IsValid)
-                return Json(new { success = false, message = "Validation failed" });
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                                       .Select(e => e.ErrorMessage)
+                                       .ToList();
+                return Json(new { success = false, errors = errors });
+            }
 
             try
             {
