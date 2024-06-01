@@ -7,7 +7,6 @@
 
 <h1>All CVs</h1>
 
-
 <table class="table">
     <thead>
         <tr>
@@ -64,7 +63,7 @@
                 @Html.DisplayFor(modelItem => item.Phone)
             </td>
             <td>
-                    <a class="btn btn-primary" asp-action="Details" asp-route-userId="@item.UserId">View CV</a>
+                    <a class="btn btn-primary" asp-action="Details" asp-route-studentId="@item.UserId">View CV</a>
             </td>
         </tr>
 }

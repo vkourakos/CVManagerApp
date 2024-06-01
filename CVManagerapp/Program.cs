@@ -1,4 +1,6 @@
 using CVManagerapp.Data;
+using CVManagerapp.Implementations;
+using CVManagerapp.Interfaces;
 using CVManagerapp.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +19,8 @@ builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.R
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<ICVService, CVService>();
 
 var app = builder.Build();
 

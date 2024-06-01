@@ -1,4 +1,5 @@
 ﻿using CVManagerapp.Data;
+using CVManagerapp.Interfaces;
 using CVManagerapp.Models;
 using CVManagerapp.ViewModels;
 using Microsoft.AspNetCore.Identity;
@@ -10,38 +11,37 @@ namespace CVManagerapp.Controllers
 {
     public class CVController : Controller
     {
-        private readonly ApplicationDbContext _db;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ICVService _cvService;
 
-        public CVController(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
+        public CVController(UserManager<ApplicationUser> userManager,
+            ICVService cvService)
         {
-            _db = db;
             _userManager = userManager;
+            _cvService = cvService;
         }
 
         public async Task<IActionResult> ListCVs()
         {
-            var CVs = await _db.CVs
-                .ToListAsync();            
-
+            var CVs = await _cvService.ListCVs();            
             var ViewModel = new CVListVM(CVs);
 
             return View(ViewModel);
         }
 
-        public async Task<IActionResult> Create(string userId)
+        public async Task<IActionResult> Create(string studentId)
         {
-            if (userId.IsNullOrEmpty())
+            if (studentId.IsNullOrEmpty())
                 return BadRequest(ModelState);
 
-            var cv = await _db.CVs.SingleOrDefaultAsync(x => x.UserId == userId);
+            var cv = await _cvService.GetCVByStudentId(studentId);
             
             if (cv != null)
-                return BadRequest("already exists");
+                return BadRequest("A CV of this student already exists!");
 
             var vm = new CVCreateVM
             {
-                UserId = userId
+                UserId = studentId
             };
             return View(vm);
         }
@@ -63,115 +63,39 @@ namespace CVManagerapp.Controllers
             if (!ModelState.IsValid)
                 return View(cVCreateVM);
 
-            var cv = new CV()
-            {
-                UserId = cVCreateVM.UserId,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
-                Email = user.Email,
-                Title = cVCreateVM.Title,
-                DateOfBirth = cVCreateVM.DateOfBirth.HasValue ? cVCreateVM.DateOfBirth.Value.Date : default,
-                Address = cVCreateVM.Address,
-                Phone = cVCreateVM.Phone
-            };
-
-            await _db.CVs.AddAsync(cv);
-            await _db.SaveChangesAsync();
+            await _cvService.CreateCV(cVCreateVM, user);
 
             return RedirectToAction("Details", new { userId = cVCreateVM.UserId });
 
         }
 
 
-        public async Task<IActionResult> Details(string userId)
-        {
-            // Retrieve CV details and associated models from the database
-            var cvDetails = _db.CVs
-                .Where(c => c.UserId == userId)
-                .Select(c => new CVDetailsVM
-                {
-                    CV = new CVVM
-                    {
-                        Id = c.Id,
-                        UserId = c.UserId,
-                        FirstName = c.FirstName,
-                        LastName = c.LastName,
-                        Title = c.Title,
-                        DateOfBirth = c.DateOfBirth,
-                        Address = c.Address,
-                        Email = c.Email,
-                        Phone = c.Phone
-                    },
-                    Educations = c.Educations.Select(e => new EducationVM
-                    {
-                        Institution = e.Institution,
-                        Degree = e.Degree,
-                        FieldOfStudy = e.FieldOfStudy,
-                        StartDate = e.StartDate,
-                        EndDate = e.EndDate
-                    }).ToList(),
-                    workexperiences = c.WorkExperiences.Select(e => new WorkExperienceVM
-                    {
-                        Company = e.Company,
-                        Position = e.Position,
-                        StartDate = e.StartDate,
-                        EndDate = e.EndDate,
-                        Description = e.Description,
-                    }).ToList(),
-                    skills = c.Skills.Select(e => new SkillVM
-                    {
-                        Name = e.Name                      
-                    }).ToList(),
-                    projects= c.Projects.Select(e => new ProjectVM
-                    {
-                        Title = e.Title,
-                        Description = e.Description,
-                        StartDate= e.StartDate, 
-                        EndDate= e.EndDate
-                    }).ToList(),
-                    certifications = c.Certifications.Select(e => new CertificationVM
-                    {
-                        Name= e.Name,
-                        IssueDate= e.IssueDate,
-                        IssuingOrganization= e.IssuingOrganization,
-                    }).ToList(),
-                    languages = c.Languages.Select(e => new LanguageVM
-                    {
-                        Name = e.Name,
-                        ProficiencyLevel= e.ProficiencyLevel
-                    }).ToList(),
-                    interests = c.Interests.Select(e => new InterestVM
-                    {
-                        Name = e.Name
-                    }).ToList(),
-                })
-                .FirstOrDefault();
+        public async Task<IActionResult> Details(string studentId)
+        {            
+            var cvDetails = await _cvService.GetCVDetailsByStudentId(studentId);
 
             if (cvDetails == null)
-            {
-                return NotFound();
-            }
+                return BadRequest("No CV found for this student");
 
             return View(cvDetails);
         }
 
-        public async Task<IActionResult> Delete(string userId)
+        public async Task<IActionResult> Delete(string studentId)
         {
-            if (userId.IsNullOrEmpty())
+            if (studentId.IsNullOrEmpty())
                 return BadRequest();
 
-            var cv = await _db.CVs.SingleAsync(c => c.UserId == userId);
+            var cv = await _cvService.GetCVByStudentId(studentId);
 
             if (cv == null)
                 return NotFound();
 
-            _db.CVs.Remove(cv);
-            await _db.SaveChangesAsync();
+            await _cvService.DeleteCV(cv);
             return RedirectToAction("ListCVs");
         }
 
         [HttpPost]
-        public JsonResult AddEducation(EducationVM model)
+        public async Task<JsonResult> AddEducation(EducationVM model)
         {  
             if (!ModelState.IsValid)
             {
@@ -182,18 +106,8 @@ namespace CVManagerapp.Controllers
             }            
 
             try
-            {               
-                var education = new Education
-                {
-                    CVId = model.CVId,
-                    Institution = model.Institution,
-                    Degree = model.Degree,
-                    FieldOfStudy = model.FieldOfStudy,
-                    StartDate = model.StartDate,
-                    EndDate = model.EndDate
-                };
-                _db.Educations.Add(education);
-                _db.SaveChanges();
+            {
+                await  _cvService.AddEducationToCV(model);
 
                 return Json(new { success = true, message = "Education added successfully" });
             }
@@ -203,7 +117,7 @@ namespace CVManagerapp.Controllers
             }
         }
         [HttpPost]
-        public JsonResult AddWorkExperience(WorkExperienceVM model)
+        public async Task<JsonResult> AddWorkExperience(WorkExperienceVM model)
         {
             if (!ModelState.IsValid)
             {
@@ -215,17 +129,7 @@ namespace CVManagerapp.Controllers
 
             try
             {
-                var workExperience = new WorkExperience
-                {
-                    CVId = model.CVId,
-                    Company = model.Company,
-                    Position = model.Position,
-                    Description = model.Description,
-                    StartDate = model.StartDate,
-                    EndDate = model.EndDate
-                };
-                _db.WorkExperiences.Add(workExperience);
-                _db.SaveChanges();
+                await _cvService.AddWorkExperienceToCV(model);
 
                 return Json(new { success = true, message = "Work Experience added successfully" });
             }
@@ -236,7 +140,7 @@ namespace CVManagerapp.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddSkill(SkillVM model)
+        public async Task<JsonResult> AddSkill(SkillVM model)
         {
             if (!ModelState.IsValid)
             {
@@ -248,13 +152,7 @@ namespace CVManagerapp.Controllers
 
             try
             {
-                var skill = new Skill
-                {
-                    CVId = model.CVId,
-                    Name= model.Name,
-                };
-                _db.Skills.Add(skill);
-                _db.SaveChanges();
+                await _cvService.AddSkillToCV(model);
 
                 return Json(new { success = true, message = "Skill added successfully" });
             }
@@ -265,7 +163,7 @@ namespace CVManagerapp.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddProject(ProjectVM model)
+        public async Task<JsonResult> AddProject(ProjectVM model)
         {
             if (!ModelState.IsValid)
             {
@@ -277,16 +175,7 @@ namespace CVManagerapp.Controllers
 
             try
             {
-                var project = new Project
-                {
-                    CVId = model.CVId,
-                    Title = model.Title,
-                    Description = model.Description,
-                    StartDate = model.StartDate,
-                    EndDate = model.EndDate
-                };
-                _db.Projects.Add(project);
-                _db.SaveChanges();
+                await _cvService.AddProjectToCV(model);
 
                 return Json(new { success = true, message = "Project added successfully" });
             }
@@ -297,7 +186,7 @@ namespace CVManagerapp.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddCertification(CertificationVM model)
+        public async Task<JsonResult> AddCertification(CertificationVM model)
         {
             if (!ModelState.IsValid)
             {
@@ -309,15 +198,7 @@ namespace CVManagerapp.Controllers
 
             try
             {
-                var certification = new Certification
-                {
-                    CVId = model.CVId,
-                    Name = model.Name,
-                    IssueDate = model.IssueDate,
-                    IssuingOrganization = model.IssuingOrganization,
-                };
-                _db.Certifications.Add(certification);
-                _db.SaveChanges();
+                await _cvService.AddCertificationToCV(model);
 
                 return Json(new { success = true, message = "Certification added successfully" });
             }
@@ -328,7 +209,7 @@ namespace CVManagerapp.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddLanguage(LanguageVM model)
+        public async Task<JsonResult> AddLanguage(LanguageVM model)
         {
             if (!ModelState.IsValid)
             {
@@ -340,14 +221,7 @@ namespace CVManagerapp.Controllers
 
             try
             {
-                var language = new Language
-                {
-                    CVId = model.CVId,
-                    Name = model.Name,
-                    ProficiencyLevel = model.ProficiencyLevel,
-                };
-                _db.Languages.Add(language);
-                _db.SaveChanges();
+                await _cvService.AddLanguageToCV(model);
 
                 return Json(new { success = true, message = "Language added successfully" });
             }
@@ -358,7 +232,7 @@ namespace CVManagerapp.Controllers
         }
 
         [HttpPost]
-        public JsonResult AddInterest(InterestVM model)
+        public async Task<JsonResult> AddInterest(InterestVM model)
         {
             if (!ModelState.IsValid)
             {
@@ -370,13 +244,7 @@ namespace CVManagerapp.Controllers
 
             try
             {
-                var interest = new Interest
-                {
-                    CVId = model.CVId,
-                    Name = model.Name,
-                };
-                _db.Interests.Add(interest);
-                _db.SaveChanges();
+                await _cvService.AddInterestToCV(model);
 
                 return Json(new { success = true, message = "Interest added successfully" });
             }
