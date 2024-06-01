@@ -3,6 +3,7 @@ using CVManagerapp.Interfaces;
 using CVManagerapp.Models;
 using CVManagerapp.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using X.PagedList;
 
 namespace CVManagerapp.Implementations
 {
@@ -201,9 +202,9 @@ namespace CVManagerapp.Implementations
             return cvDetails;
         }
 
-        public async Task<List<CV>?> ListCVs()
+        public async Task<IPagedList<CV>?> ListCVs(int page, int pageSize)
         {
-            var CVs = await _db.CVs.ToListAsync();
+            var CVs = await _db.CVs.ToPagedListAsync(page, pageSize);
             return CVs;
         }
     }

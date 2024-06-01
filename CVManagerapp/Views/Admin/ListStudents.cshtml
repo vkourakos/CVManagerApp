@@ -1,4 +1,6 @@
-﻿@model List<ApplicationUser>
+﻿@using X.PagedList.Mvc.Core
+@using X.PagedList
+@model IPagedList<ApplicationUser>
 
 <h1>List of Students</h1>
 
@@ -24,4 +26,21 @@
         }
     </tbody>
 </table>
+@Html.PagedListPager((IPagedList)Model, page => Url.Action("ListStudents", new { page = page}),
+            new PagedListRenderOptions
+        {
+            DisplayItemSliceAndTotal = true,
+            ContainerDivClasses = new[] { "navigation" },
+            LiElementClasses = new[] { "page-item" },
+            PageClasses = new[] { "page-link" },
+        })
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('ul.pagination > li.disabled > a').addClass('page-link');
+        });
+    </script>
+    <script src="~/js/movies.js"></script>
+}
 

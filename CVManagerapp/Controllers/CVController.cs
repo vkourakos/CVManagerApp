@@ -21,9 +21,10 @@ namespace CVManagerapp.Controllers
             _cvService = cvService;
         }
 
-        public async Task<IActionResult> ListCVs()
+        public async Task<IActionResult> ListCVs(int page = 1)
         {
-            var CVs = await _cvService.ListCVs();            
+            const int PageSize = 5;
+            var CVs = await _cvService.ListCVs(page, PageSize);            
             var ViewModel = new CVListVM(CVs);
 
             return View(ViewModel);

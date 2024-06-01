@@ -1,12 +1,13 @@
 ﻿using CVManagerapp.Models;
+using X.PagedList;
 
 namespace CVManagerapp.ViewModels
 {
     public class CVListVM
     {
-        public IList<CV> Cvs { get; set; }
+        public IPagedList<CV>? Cvs { get; set; }
 
-        public CVListVM(IList<CV> cvs)
+        public CVListVM(IPagedList<CV>? cvs)
         {
             Cvs = cvs;
         }
