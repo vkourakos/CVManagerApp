@@ -36,9 +36,12 @@ namespace CVManagerapp.Controllers
                 return BadRequest(ModelState);
 
             var cv = await _cvService.GetCVByStudentId(studentId);
-            
+
             if (cv != null)
-                return BadRequest("A CV of this student already exists!");
+            {
+                TempData["error"] = "This Student already has a CV";
+                return RedirectToAction("ListStudents", "Admin");
+            }
 
             var vm = new CVCreateVM
             {
@@ -76,7 +79,10 @@ namespace CVManagerapp.Controllers
             var cvDetails = await _cvService.GetCVDetailsByStudentId(studentId);
 
             if (cvDetails == null)
-                return BadRequest("No CV found for this student");
+            {
+                TempData["error"] = "No CV found for this student";
+                return RedirectToAction("ListStudents", "Admin");
+            }        
 
             return View(cvDetails);
         }
