@@ -21,11 +21,11 @@ namespace CVManagerapp.Controllers
             _cvService = cvService;
         }
 
-        public async Task<IActionResult> ListCVs(int page = 1)
+        public async Task<IActionResult> ListCVs(string? searchString, int page = 1)
         {
             const int PageSize = 5;
-            var CVs = await _cvService.ListCVs(page, PageSize);            
-            var ViewModel = new CVListVM(CVs);
+            var CVs = await _cvService.ListCVs(searchString, page, PageSize);            
+            var ViewModel = new CVListVM(CVs, searchString);
 
             return View(ViewModel);
         }
@@ -68,11 +68,12 @@ namespace CVManagerapp.Controllers
                 return View(cVCreateVM);
 
             await _cvService.CreateCV(cVCreateVM, user);
-
-            return RedirectToAction("Details", new { userId = cVCreateVM.UserId });
+            
+            return RedirectToAction("ListStudents", "Admin");
 
         }
-
+        //todo add edit functionality
+        //todo add language list for languages and add issuing organization field
 
         public async Task<IActionResult> Details(string studentId)
         {            

@@ -3,6 +3,7 @@ using CVManagerapp.Interfaces;
 using CVManagerapp.Models;
 using CVManagerapp.ViewModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using X.PagedList;
 
 namespace CVManagerapp.Implementations
@@ -202,9 +203,24 @@ namespace CVManagerapp.Implementations
             return cvDetails;
         }
 
-        public async Task<IPagedList<CV>?> ListCVs(int page, int pageSize)
+        public async Task<IPagedList<CV>?> ListCVs(string searchString,  int page, int pageSize)
         {
-            var CVs = await _db.CVs.ToPagedListAsync(page, pageSize);
+            IQueryable<CV> filteredCvs = _db.CVs.AsNoTracking();
+
+            if (!searchString.IsNullOrEmpty())
+                filteredCvs = filteredCvs.Where(cv => 
+                         cv.FirstName.Contains(searchString) ||
+                         cv.LastName.Contains(searchString) ||
+                         cv.Title.Contains(searchString) ||
+                         cv.Educations.Any(e => e.Degree.Contains(searchString) || e.Institution.Contains(searchString) || e.FieldOfStudy.Contains(searchString)) ||
+                         cv.WorkExperiences.Any(we => we.Position.Contains(searchString) || we.Company.Contains(searchString)) ||
+                         cv.Interests.Any(i => i.Name.Contains(searchString)) ||
+                         cv.Certifications.Any(c => c.Name.Contains(searchString) || c.IssuingOrganization.Contains(searchString)) ||
+                         cv.Languages.Any(l => l.Name.Contains(searchString)) ||
+                         cv.Projects.Any(p => p.Title.Contains(searchString)) ||
+                         cv.Skills.Any(s => s.Name.Contains(searchString)));
+
+            var CVs = await filteredCvs.ToPagedListAsync(page, pageSize);
             return CVs;
         }
     }

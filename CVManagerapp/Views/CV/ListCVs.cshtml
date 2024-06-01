@@ -9,6 +9,13 @@
 
 <h1>All CVs</h1>
 
+<form method="GET" asp-controller="CV" asp-action="ListCVs" class="d-flex flex-row" id="filterForm">
+    <div class="form-group d-flex flex-row gap-2">
+        <input type="text" name="searchString" id="searchString" value="@Model.SearchString" placeholder="Search CVs" class="form-control" />
+    </div>   
+    <button class="btn btn-outline-primary ms-2">Search</button>
+    <button type="button" class="btn btn-outline-secondary ms-2" onclick="resetForm()">Reset</button>
+</form>
 <table class="table">
     <thead>
         <tr>
@@ -87,11 +94,10 @@
             $('ul.pagination > li.disabled > a').addClass('page-link');
         });
 
-        // function resetForm() {
-        //     document.getElementById('searchString').value = "";
-        //     document.getElementsByName('genre')[0].value = "";
-        //     document.getElementById('filterForm').submit();
-        // }
+        function resetForm() {
+            document.getElementById('searchString').value = "";
+            document.getElementById('filterForm').submit();
+        }
     </script>
     <script src="~/js/movies.js"></script>
 }

@@ -6,7 +6,7 @@ namespace CVManagerapp.Interfaces
 {
     public interface ICVService
     {
-        Task<IPagedList<CV>?> ListCVs(int page, int pageSize);
+        Task<IPagedList<CV>?> ListCVs(string searchString, int page, int pageSize);
         Task<CV>? GetCVByStudentId(string studentId);
         Task CreateCV(CVCreateVM cVCreateVM, ApplicationUser user);
         Task<CVDetailsVM>? GetCVDetailsByStudentId(string studentId);
