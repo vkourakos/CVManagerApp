@@ -11,6 +11,7 @@ namespace CVManagerapp.Interfaces
         Task CreateCV(CVCreateVM cVCreateVM, ApplicationUser user);
         Task<CVDetailsVM>? GetCVDetailsByStudentId(string studentId);
         Task DeleteCV(CV cv);
+        Task EditCV(CV cv);
         Task AddEducationToCV(EducationVM educationVM);
         Task AddWorkExperienceToCV(WorkExperienceVM workExperienceVM);
         Task AddSkillToCV(SkillVM skillVM);

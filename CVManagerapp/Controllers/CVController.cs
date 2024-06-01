@@ -75,6 +75,26 @@ namespace CVManagerapp.Controllers
         //todo add edit functionality
         //todo add language list for languages and add issuing organization field
 
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Edit(CVCreateVM cVCreateVM)
+        //{
+        //    if (cVCreateVM.UserId.IsNullOrEmpty())
+        //        return BadRequest(ModelState);
+
+        //    var user = await _userManager.FindByIdAsync(cVCreateVM.UserId);
+        //    if (user == null)
+        //        return NotFound();
+
+        //    if (!ModelState.IsValid)
+        //        return View(cVCreateVM);
+
+        //    await _cvService.CreateCV(cVCreateVM, user);
+
+        //    return RedirectToAction("ListStudents", "Admin");
+
+        //}
+
         public async Task<IActionResult> Details(string studentId)
         {            
             var cvDetails = await _cvService.GetCVDetailsByStudentId(studentId);

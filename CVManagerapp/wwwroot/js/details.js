@@ -96,7 +96,7 @@
                             newRow += '<td>' + data[key] + '</td>';
                         }
                     }
-                    newRow += '<td></td></tr>';
+                    newRow += '<td><button>aa</button</td></tr>';
                     $('#' + tableId + ' tbody').append(newRow);
                     $('.addRow').prop('disabled', false);  
                 } else {

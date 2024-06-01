@@ -132,6 +132,11 @@ namespace CVManagerapp.Implementations
             await _db.SaveChangesAsync();
         }
 
+        public Task EditCV(CV cv)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<CV>? GetCVByStudentId(string studentId)
         {
             var cv = await _db.CVs.SingleOrDefaultAsync(x => x.UserId == studentId);
