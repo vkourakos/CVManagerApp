@@ -8,8 +8,10 @@ namespace CVManagerapp.Models
         public int Id { get; set; }
         public string Company { get; set; }
         public string Position { get; set; }
+        [Column(TypeName = "Date")]
         [DataType(DataType.Date)]
         public DateTime StartDate { get; set; }
+        [Column(TypeName = "Date")]
         [DataType(DataType.Date)]
         public DateTime EndDate { get; set; }
         public string Description { get; set; }

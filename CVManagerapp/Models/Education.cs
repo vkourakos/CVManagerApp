@@ -9,8 +9,10 @@ namespace CVManagerapp.Models
         public string Institution { get; set; }
         public string Degree { get; set; }
         public string FieldOfStudy { get; set; }
+        [Column(TypeName = "Date")]
         [DataType(DataType.Date)]
         public DateTime StartDate { get; set; }
+        [Column(TypeName = "Date")]
         [DataType(DataType.Date)]
         public DateTime EndDate { get; set; }
         public int CVId { get; set; }

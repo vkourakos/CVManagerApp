@@ -73,6 +73,7 @@ namespace CVManagerapp.Controllers
 
         }
         //todo add edit functionality
+        //todo add delete functionality
         //todo add language list for languages and add issuing organization field
 
         //[HttpPost]

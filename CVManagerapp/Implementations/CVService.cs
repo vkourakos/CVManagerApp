@@ -23,7 +23,7 @@ namespace CVManagerapp.Implementations
             {
                 CVId = certificationVM.CVId,
                 Name = certificationVM.Name,
-                IssueDate = certificationVM.IssueDate,
+                IssueDate = certificationVM.IssueDate.Date,
                 IssuingOrganization = certificationVM.IssuingOrganization,
             };
             await _db.Certifications.AddAsync(certification);
@@ -38,8 +38,8 @@ namespace CVManagerapp.Implementations
                 Institution = educationVM.Institution,
                 Degree = educationVM.Degree,
                 FieldOfStudy = educationVM.FieldOfStudy,
-                StartDate = educationVM.StartDate,
-                EndDate = educationVM.EndDate
+                StartDate = educationVM.StartDate.Date,
+                EndDate = educationVM.EndDate.Date
             };
             await _db.Educations.AddAsync(education);
             await _db.SaveChangesAsync();
@@ -75,8 +75,8 @@ namespace CVManagerapp.Implementations
                 CVId = projectVM.CVId,
                 Title = projectVM.Title,
                 Description = projectVM.Description,
-                StartDate = projectVM.StartDate,
-                EndDate = projectVM.EndDate
+                StartDate = projectVM.StartDate.Date,
+                EndDate = projectVM.EndDate.Date
             };
             await _db.Projects.AddAsync(project);
             await _db.SaveChangesAsync();
@@ -101,8 +101,8 @@ namespace CVManagerapp.Implementations
                 Company = workExperienceVM.Company,
                 Position = workExperienceVM.Position,
                 Description = workExperienceVM.Description,
-                StartDate = workExperienceVM.StartDate,
-                EndDate = workExperienceVM.EndDate
+                StartDate = workExperienceVM.StartDate.Date,
+                EndDate = workExperienceVM.EndDate.Date
             };
             await _db.WorkExperiences.AddAsync(workExperience);
             await _db.SaveChangesAsync();
@@ -117,7 +117,7 @@ namespace CVManagerapp.Implementations
                 LastName = user.LastName,
                 Email = user.Email,
                 Title = cVCreateVM.Title,
-                DateOfBirth = cVCreateVM.DateOfBirth.HasValue ? cVCreateVM.DateOfBirth.Value.Date : default,
+                DateOfBirth = (DateTime)cVCreateVM.DateOfBirth,
                 Address = cVCreateVM.Address,
                 Phone = cVCreateVM.Phone
             };

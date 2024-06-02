@@ -26,7 +26,7 @@
         <dd class="col-sm-10">@Model.CV.Title</dd>
 
         <dt class="col-sm-2">Date of Birth</dt>
-        <dd class="col-sm-10">@Model.CV.DateOfBirth</dd>
+        <dd class="col-sm-10">@Model.CV.DateOfBirth.ToString("dd/MM/yyyy")</dd>
 
         <dt class="col-sm-2">Address</dt>
         <dd class="col-sm-10">@Model.CV.Address</dd>
@@ -65,9 +65,19 @@
                     <td>@education.Institution</td>
                     <td>@education.Degree</td>
                     <td>@education.FieldOfStudy</td>
-                    <td>@education.StartDate</td>
-                    <td>@education.EndDate</td>
-                    <td><i class="bi bi-pencil-square" style="cursor: pointer;"></i></td>
+                    <td>@education.StartDate.ToString("dd/MM/yyyy")</td>
+                    <td>@education.EndDate.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        <i class="bi bi-pencil-square addEditRow"
+                           style="cursor: pointer;"
+                           data-table-id="educationTable"
+                           data-row-edit-template-id="educationRowEditTemplate"
+                           data-institution="@education.Institution"
+                           data-degree="@education.Degree"
+                           data-field-of-study="@education.FieldOfStudy"
+                           data-start-date="@education.StartDate.ToString("yyyy-MM-dd")"
+                           data-end-date="@education.EndDate.ToString("yyyy-MM-dd")"></i>
+                    </td>
                 </tr>
             }
             @if (!Model.Educations.Any())
@@ -90,6 +100,21 @@
             <td>
                 <i class="bi bi-floppy saveRow" data-save-function="saveEducation" style="cursor: pointer; margin-right: 10px;"></i>
                 <i class="bi bi-x-circle-fill cancelRow" style="cursor: pointer;"></i>
+                <div class="validationErrors"></div>
+            </td>
+        </tr>
+    </template>
+
+    <template id="educationRowEditTemplate" style="display: none;">
+        <tr>
+            <td><input type="text" name="Institution" required></td>
+            <td><input type="text" name="Degree" required></td>
+            <td><input type="text" name="FieldOfStudy" required></td>
+            <td><input type="date" name="StartDate" required></td>
+            <td><input type="date" name="EndDate" required></td>
+            <td>
+                <i class="bi bi-floppy saveEditRow" data-edit-function="editEducation" style="cursor: pointer; margin-right: 10px;"></i>
+                <i class="bi bi-x-circle-fill cancelEditRow" style="cursor: pointer;"></i>
                 <div class="validationErrors"></div>
             </td>
         </tr>
@@ -119,8 +144,8 @@
                 <tr>
                     <td>@workexperience.Company</td>
                     <td>@workexperience.Position</td>
-                    <td>@workexperience.StartDate</td>
-                    <td>@workexperience.EndDate</td>
+                    <td>@workexperience.StartDate.ToString("dd/MM/yyyy")</td>
+                    <td>@workexperience.EndDate.ToString("dd/MM/yyyy")</td>
                     <td>@workexperience.Description</td>
                     <td><i class="bi bi-pencil-square" style="cursor: pointer;"></i></td>
                 </tr>
@@ -212,8 +237,8 @@
                 <tr>
                     <td>@project.Title</td>
                     <td>@project.Description</td>
-                    <td>@project.StartDate</td>
-                    <td>@project.EndDate</td>
+                    <td>@project.StartDate.ToString("dd/MM/yyyy")</td>
+                    <td>@project.EndDate.ToString("dd/MM/yyyy")</td>
                     <td><i class="bi bi-pencil-square" style="cursor: pointer;"></i></td>
                 </tr>
             }
@@ -260,7 +285,7 @@
             {
                 <tr>
                     <td>@certification.Name</td>
-                    <td>@certification.IssueDate</td>
+                    <td>@certification.IssueDate.ToString("dd/MM/yyyy")</td>
                     <td>@certification.IssuingOrganization</td>
                     <td><i class="bi bi-pencil-square" style="cursor: pointer;"></i></td>
                 </tr>

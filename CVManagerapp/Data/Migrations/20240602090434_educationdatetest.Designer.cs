@@ -4,6 +4,7 @@ using CVManagerapp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CVManagerapp.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240602090434_educationdatetest")]
+    partial class educationdatetest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -112,8 +115,9 @@ namespace CVManagerapp.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<DateTime>("DateOfBirth")
-                        .HasColumnType("Date");
+                    b.Property<DateTime?>("DateOfBirth")
+                        .IsRequired()
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -162,7 +166,7 @@ namespace CVManagerapp.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime>("IssueDate")
-                        .HasColumnType("Date");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("IssuingOrganization")
                         .IsRequired()
@@ -279,10 +283,10 @@ namespace CVManagerapp.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("EndDate")
-                        .HasColumnType("Date");
+                        .HasColumnType("datetime2");
 
                     b.Property<DateTime>("StartDate")
-                        .HasColumnType("Date");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -337,14 +341,14 @@ namespace CVManagerapp.Data.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("EndDate")
-                        .HasColumnType("Date");
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Position")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("StartDate")
-                        .HasColumnType("Date");
+                        .HasColumnType("datetime2");
 
                     b.HasKey("Id");
 

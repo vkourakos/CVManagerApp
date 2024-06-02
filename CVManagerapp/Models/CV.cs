@@ -26,8 +26,9 @@ namespace CVManagerapp.Models
         public string Title { get; set; }
         [Required]
         [DataType(DataType.Date)]
+        [Column(TypeName = "Date")]
         [Display(Name = "Date of Birth")]
-        public DateTime? DateOfBirth { get; set; }
+        public DateTime DateOfBirth { get; set; }
         [Required]
         [StringLength(100)]
         public string Address { get; set; }

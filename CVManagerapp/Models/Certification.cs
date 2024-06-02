@@ -7,6 +7,7 @@ namespace CVManagerapp.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        [Column(TypeName = "Date")]
         [DataType(DataType.Date)]
         public DateTime IssueDate { get; set; }
         public string IssuingOrganization { get; set; }
