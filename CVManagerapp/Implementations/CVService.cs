@@ -132,9 +132,20 @@ namespace CVManagerapp.Implementations
             await _db.SaveChangesAsync();
         }
 
-        public Task EditCV(CV cv)
+        public async Task EditCV(CVEditVM vm)
         {
-            throw new NotImplementedException();
+            var cv = await GetCVByStudentId(vm.UserId);
+
+            if(cv == null)
+                return;
+
+            cv.Title = vm.Title;
+            cv.Address = vm.Address;
+            cv.Phone = vm.Phone;
+            cv.DateOfBirth = (DateTime)vm.DateOfBirth;
+
+            _db.Update(cv);
+            await _db.SaveChangesAsync();
         }
 
         public async Task<CV>? GetCVByStudentId(string studentId)

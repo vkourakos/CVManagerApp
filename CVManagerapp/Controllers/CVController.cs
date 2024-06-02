@@ -76,25 +76,39 @@ namespace CVManagerapp.Controllers
         //todo add delete functionality
         //todo add language list for languages and add issuing organization field
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public async Task<IActionResult> Edit(CVCreateVM cVCreateVM)
-        //{
-        //    if (cVCreateVM.UserId.IsNullOrEmpty())
-        //        return BadRequest(ModelState);
+        public async Task<IActionResult> Edit(string studentId)
+        {
+            if (studentId.IsNullOrEmpty())
+                return BadRequest(ModelState);
 
-        //    var user = await _userManager.FindByIdAsync(cVCreateVM.UserId);
-        //    if (user == null)
-        //        return NotFound();
+            var cv = await _cvService.GetCVByStudentId(studentId);
+            var vm = new CVEditVM
+            {
+                Title = cv.Title,
+                DateOfBirth = cv.DateOfBirth,
+                Address = cv.Address,
+                Phone = cv.Phone,
+                UserId = studentId
+            };
 
-        //    if (!ModelState.IsValid)
-        //        return View(cVCreateVM);
+            return View(vm);
+        }
 
-        //    await _cvService.CreateCV(cVCreateVM, user);
 
-        //    return RedirectToAction("ListStudents", "Admin");
 
-        //}
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(CVEditVM vm)
+        {
+            if (!ModelState.IsValid)
+                return View(vm);
+           
+            await _cvService.EditCV(vm);
+
+            return RedirectToAction("Details", new { studentId = vm.UserId});
+
+        }
 
         public async Task<IActionResult> Details(string studentId)
         {            
