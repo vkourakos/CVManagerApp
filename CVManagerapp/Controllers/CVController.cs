@@ -68,8 +68,8 @@ namespace CVManagerapp.Controllers
                 return View(cVCreateVM);
 
             await _cvService.CreateCV(cVCreateVM, user);
-            
-            return RedirectToAction("ListStudents", "Admin");
+
+            return RedirectToAction("Details", new { studentId = cVCreateVM.UserId });
 
         }
         //todo add edit functionality
