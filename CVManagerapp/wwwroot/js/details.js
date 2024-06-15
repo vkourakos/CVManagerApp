@@ -6,16 +6,15 @@
         var template = $('#' + templateId).html();
 
         $('#' + tableId + ' tbody').append(template);
-        $('.addRow').prop('disabled', true);  
+        $('.addRow').prop('disabled', true);
     });
-
 
     $(document).on('click', '.cancelRow', function () {
         var row = $(this).closest('tr');
         var tableId = row.closest('table').attr('id');
 
         row.remove();
-        $('.addRow').prop('disabled', false);  
+        $('.addRow').prop('disabled', false);
 
         if ($('#' + tableId + ' tbody tr').length === 0) {
             var colspan = $('#' + tableId + ' thead th').length;
@@ -36,15 +35,15 @@
                 data.Institution = row.find('input[name="Institution"]').val();
                 data.Degree = row.find('input[name="Degree"]').val();
                 data.FieldOfStudy = row.find('input[name="FieldOfStudy"]').val();
-                data.StartDate = formatDate(row.find('input[name="StartDate"]').val());
-                data.EndDate = formatDate(row.find('input[name="EndDate"]').val());
+                data.StartDate = formatDateForInput(row.find('input[name="StartDate"]').val());
+                data.EndDate = formatDateForInput(row.find('input[name="EndDate"]').val());
                 url = '/CV/AddEducation';
                 break;
             case 'workExperienceTable':
                 data.Company = row.find('input[name="Company"]').val();
                 data.Position = row.find('input[name="Position"]').val();
-                data.StartDate = formatDate(row.find('input[name="StartDate"]').val());
-                data.EndDate = formatDate(row.find('input[name="EndDate"]').val());
+                data.StartDate = formatDateForInput(row.find('input[name="StartDate"]').val());
+                data.EndDate = formatDateForInput(row.find('input[name="EndDate"]').val());
                 data.Description = row.find('input[name="Description"]').val();
                 url = '/CV/AddWorkExperience';
                 break;
@@ -55,13 +54,13 @@
             case 'projectTable':
                 data.Title = row.find('input[name="Title"]').val();
                 data.Description = row.find('input[name="Description"]').val();
-                data.StartDate = formatDate(row.find('input[name="StartDate"]').val());
-                data.EndDate = formatDate(row.find('input[name="EndDate"]').val());
+                data.StartDate = formatDateForInput(row.find('input[name="StartDate"]').val());
+                data.EndDate = formatDateForInput(row.find('input[name="EndDate"]').val());
                 url = '/CV/AddProject';
                 break;
             case 'certificationTable':
                 data.Name = row.find('input[name="Name"]').val();
-                data.IssueDate = formatDate(row.find('input[name="IssueDate"]').val());
+                data.IssueDate = formatDateForInput(row.find('input[name="IssueDate"]').val());
                 data.IssuingOrganization = row.find('input[name="IssuingOrganization"]').val();
                 url = '/CV/AddCertification';
                 break;
@@ -98,7 +97,7 @@
                     }
                     newRow += '<td><i class="bi bi-pencil-square" style="cursor: pointer;"></i></td></tr>';
                     $('#' + tableId + ' tbody').append(newRow);
-                    $('.addRow').prop('disabled', false);  
+                    $('.addRow').prop('disabled', false);
                 } else {
                     var errorHtml = '<ul>';
                     response.errors.forEach(function (error) {
@@ -173,8 +172,8 @@
                 data.Institution = row.find('input[name="Institution"]').val();
                 data.Degree = row.find('input[name="Degree"]').val();
                 data.FieldOfStudy = row.find('input[name="FieldOfStudy"]').val();
-                data.StartDate = formatDate(row.find('input[name="StartDate"]').val());
-                data.EndDate = formatDate(row.find('input[name="EndDate"]').val());
+                data.StartDate = formatDateForInput(row.find('input[name="StartDate"]').val());
+                data.EndDate = formatDateForInput(row.find('input[name="EndDate"]').val());
                 url = '/CV/EditEducation';
                 break;
             // Add cases for other tables
@@ -211,9 +210,6 @@
         });
     });
 
-
-
-
     function formatDate(dateStr) {
         if (!dateStr) return '';
         var date = new Date(dateStr);
@@ -223,13 +219,12 @@
         return day + "/" + month + "/" + year;
     }
 
-
     function formatDateForInput(dateString) {
+        if (!dateString) return '';
         var date = new Date(dateString);
-        var day = date.getDate().toString().padStart(2, '0');
-        var month = (date.getMonth() + 1).toString().padStart(2, '0');
+        var day = ("0" + date.getDate()).slice(-2);
+        var month = ("0" + (date.getMonth() + 1)).slice(-2);
         var year = date.getFullYear();
         return `${year}-${month}-${day}`;
     }
-
 });

@@ -48,11 +48,13 @@ namespace CVManagerapp.ViewModels
 
         [Display(Name = "Start Date")]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         [Required(ErrorMessage = "Start Date is required")]
         public DateTime StartDate { get; set; }
 
         [Display(Name = "End Date")]
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = true)]
         [Required(ErrorMessage = "End Date is required")]
         [EndDateAfterStartDate(ErrorMessage = "End Date must be after Start Date")]
         public DateTime EndDate { get; set; }
