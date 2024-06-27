@@ -1,4 +1,6 @@
 ﻿$(document).ready(function () {
+    var tempEntries = {};
+
     $('.addRow').click(function () {
         var button = $(this);
         var tableId = button.data('table-id');
@@ -25,6 +27,7 @@
     $(document).on('click', '.saveRow', function () {
         var row = $(this).closest('tr');
         var tableId = row.closest('table').attr('id');
+        var tempId = Date.now().toString(); // Temporary ID for the new entry
 
         var data = {
             CVId: $('#CVId').val()
@@ -78,12 +81,17 @@
                 return;
         }
 
+        tempEntries[tempId] = data; // Store the data temporarily
+
         $.ajax({
             type: 'POST',
             url: url,
             data: data,
             success: function (response) {
                 if (response.success) {
+                    var entryId = response.id; // Get the actual ID from the server response
+                    tempEntries[tempId].Id = entryId; // Update the temporary entry with the actual ID
+
                     row.remove();
                     var rowToRemove = document.getElementById('noEntriesRow');
                     if (rowToRemove) {
@@ -91,13 +99,14 @@
                     }
                     var newRow = '<tr>';
                     for (var key in data) {
-                        if (key !== 'CVId') {
+                        if (key !== 'CVId' && key !== 'Id') {
                             newRow += '<td>' + data[key] + '</td>';
                         }
                     }
-                    newRow += '<td><i class="bi bi-pencil-square" style="cursor: pointer;"></i></td></tr>';
+                    newRow += '<td><i class="bi bi-pencil-square addEditRow" style="cursor: pointer;" data-id="' + entryId + '" data-institution="' + data.Institution + '" data-degree="' + data.Degree + '" data-field-of-study="' + data.FieldOfStudy + '" data-start-date="' + data.StartDate + '" data-end-date="' + data.EndDate + '" data-table-id="' + tableId + '" data-row-edit-template-id="educationRowEditTemplate"></i></td></tr>';
                     $('#' + tableId + ' tbody').append(newRow);
                     $('.addRow').prop('disabled', false);
+                    delete tempEntries[tempId]; // Remove the temporary entry after adding the actual entry
                 } else {
                     var errorHtml = '<ul>';
                     response.errors.forEach(function (error) {
@@ -119,6 +128,7 @@
         var templateId = button.data('row-edit-template-id');
         var template = $('#' + templateId).html();
 
+        var id = button.data('id');
         var institution = button.data('institution');
         var degree = button.data('degree');
         var fieldOfStudy = button.data('field-of-study');
@@ -126,6 +136,7 @@
         var endDate = button.data('end-date');
 
         var editRow = $(template);
+        editRow.find('input[name="Id"]').val(id);
         editRow.find('input[name="Institution"]').val(institution);
         editRow.find('input[name="Degree"]').val(degree);
         editRow.find('input[name="FieldOfStudy"]').val(fieldOfStudy);
@@ -152,7 +163,7 @@
         originalRow += '<td>' + fieldOfStudy + '</td>';
         originalRow += '<td>' + formatDate(startDate) + '</td>';
         originalRow += '<td>' + formatDate(endDate) + '</td>';
-        originalRow += '<td><i class="bi bi-pencil-square addEditRow" style="cursor: pointer;" data-table-id="educationTable" data-row-edit-template-id="educationRowEditTemplate"></i></td>';
+        originalRow += '<td><i class="bi bi-pencil-square addEditRow" style="cursor: pointer;" data-id="' + row.find('input[name="Id"]').val() + '" data-institution="' + institution + '" data-degree="' + degree + '" data-field-of-study="' + fieldOfStudy + '" data-start-date="' + startDate + '" data-end-date="' + endDate + '" data-table-id="' + tableId + '" data-row-edit-template-id="educationRowEditTemplate"></i></td>';
         originalRow += '</tr>';
 
         row.after(originalRow).remove();
@@ -169,6 +180,7 @@
         var url = '';
         switch (tableId) {
             case 'educationTable':
+                data.Id = row.find('input[name="Id"]').val();
                 data.Institution = row.find('input[name="Institution"]').val();
                 data.Degree = row.find('input[name="Degree"]').val();
                 data.FieldOfStudy = row.find('input[name="FieldOfStudy"]').val();
@@ -176,7 +188,49 @@
                 data.EndDate = formatDateForInput(row.find('input[name="EndDate"]').val());
                 url = '/CV/EditEducation';
                 break;
-            // Add cases for other tables
+            case 'workExperienceTable':
+                data.Id = row.find('input[name="Id"]').val();
+                data.Company = row.find('input[name="Company"]').val();
+                data.Position = row.find('input[name="Position"]').val();
+                data.StartDate = formatDateForInput(row.find('input[name="StartDate"]').val());
+                data.EndDate = formatDateForInput(row.find('input[name="EndDate"]').val());
+                data.Description = row.find('input[name="Description"]').val();
+                url = '/CV/EditWorkExperience';
+                break;
+            case 'skillTable':
+                data.Id = row.find('input[name="Id"]').val();
+                data.Name = row.find('input[name="Name"]').val();
+                url = '/CV/EditSkill';
+                break;
+            case 'projectTable':
+                data.Id = row.find('input[name="Id"]').val();
+                data.Title = row.find('input[name="Title"]').val();
+                data.Description = row.find('input[name="Description"]').val();
+                data.StartDate = formatDateForInput(row.find('input[name="StartDate"]').val());
+                data.EndDate = formatDateForInput(row.find('input[name="EndDate"]').val());
+                url = '/CV/EditProject';
+                break;
+            case 'certificationTable':
+                data.Id = row.find('input[name="Id"]').val();
+                data.Name = row.find('input[name="Name"]').val();
+                data.IssueDate = formatDateForInput(row.find('input[name="IssueDate"]').val());
+                data.IssuingOrganization = row.find('input[name="IssuingOrganization"]').val();
+                url = '/CV/EditCertification';
+                break;
+            case 'languageTable':
+                data.Id = row.find('input[name="Id"]').val();
+                data.Name = row.find('input[name="Name"]').val();
+                data.ProficiencyLevel = row.find('input[name="ProficiencyLevel"]').val();
+                url = '/CV/EditLanguage';
+                break;
+            case 'interestTable':
+                data.Id = row.find('input[name="Id"]').val();
+                data.Name = row.find('input[name="Name"]').val();
+                url = '/CV/EditInterest';
+                break;
+            default:
+                alert('Unknown table id: ' + tableId);
+                return;
         }
 
         $.ajax({
@@ -188,11 +242,12 @@
                     row.remove();
                     var newRow = '<tr>';
                     for (var key in data) {
-                        if (key !== 'CVId') {
+                        if (key !== 'CVId' && key !== 'Id') {
                             newRow += '<td>' + data[key] + '</td>';
                         }
                     }
-                    newRow += '<td><i class="bi bi-pencil-square addEditRow" style="cursor: pointer;" data-table-id="educationTable" data-row-edit-template-id="educationRowEditTemplate"></i></td></tr>';
+                    newRow += '<td><i class="bi bi-pencil-square addEditRow" style="cursor: pointer;" data-id="' + data.Id + '" data-institution="' + data.Institution + '" data-degree="' + data.Degree + '" data-field-of-study="' + data.FieldOfStudy + '" data-start-date="' + data.StartDate + '" data-end-date="' + data.EndDate + '" data-table-id="' + tableId + '" data-row-edit-template-id="educationRowEditTemplate"></i></td>';
+                    newRow += '</tr>';
                     $('#' + tableId + ' tbody').append(newRow);
                     $('.addRow').prop('disabled', false);
                 } else {

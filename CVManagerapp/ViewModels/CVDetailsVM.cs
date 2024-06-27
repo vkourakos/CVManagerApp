@@ -34,6 +34,7 @@ namespace CVManagerapp.ViewModels
 
     public class EducationVM
     {
+        public int Id { get; set; }
         [Required(ErrorMessage = "Institution is required")]
         [StringLength(300)]
         public string Institution { get; set; }

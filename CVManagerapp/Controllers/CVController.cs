@@ -137,28 +137,30 @@ namespace CVManagerapp.Controllers
             return RedirectToAction("ListCVs");
         }
 
-        [HttpPost]
         public async Task<JsonResult> AddEducation(EducationVM model)
-        {  
+        {
             if (!ModelState.IsValid)
             {
                 var errors = ModelState.Values.SelectMany(v => v.Errors)
-                                       .Select(e => e.ErrorMessage)
-                                       .ToList();
+                                           .Select(e => e.ErrorMessage)
+                                           .ToList();
                 return Json(new { success = false, errors = errors });
-            }            
+            }
 
             try
             {
-                await  _cvService.AddEducationToCV(model);
+                var educationId = await _cvService.AddEducationToCV(model);
 
-                return Json(new { success = true, message = "Education added successfully" });
+                return Json(new { success = true, id = educationId, message = "Education added successfully" });
             }
             catch (Exception ex)
             {
                 return Json(new { success = false, message = "An error occurred while adding education: " + ex.Message });
             }
         }
+
+        
+
         [HttpPost]
         public async Task<JsonResult> AddWorkExperience(WorkExperienceVM model)
         {
@@ -297,7 +299,166 @@ namespace CVManagerapp.Controllers
             }
         }
 
+        [HttpPost]
+        public async Task<JsonResult> EditEducation(EducationVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                                       .Select(e => e.ErrorMessage)
+                                       .ToList();
+                return Json(new { success = false, errors = errors });
+            }
 
+            try
+            {
+                await _cvService.EditEducation(model);
+
+                return Json(new { success = true, message = "Education updated successfully" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred while updating education: " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> EditWorkExperience(WorkExperienceVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                                       .Select(e => e.ErrorMessage)
+                                       .ToList();
+                return Json(new { success = false, errors = errors });
+            }
+
+            try
+            {
+                await _cvService.EditWorkExperience(model);
+
+                return Json(new { success = true, message = "Work Experience updated successfully" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred while updating Work Experience: " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> EditSkill(SkillVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                                       .Select(e => e.ErrorMessage)
+                                       .ToList();
+                return Json(new { success = false, errors = errors });
+            }
+
+            try
+            {
+                await _cvService.EditSkill(model);
+
+                return Json(new { success = true, message = "Skill updated successfully" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred while updating skill: " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> EditProject(ProjectVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                                       .Select(e => e.ErrorMessage)
+                                       .ToList();
+                return Json(new { success = false, errors = errors });
+            }
+
+            try
+            {
+                await _cvService.EditProject(model);
+
+                return Json(new { success = true, message = "Project updated successfully" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred while updating project: " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> EditCertification(CertificationVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                                       .Select(e => e.ErrorMessage)
+                                       .ToList();
+                return Json(new { success = false, errors = errors });
+            }
+
+            try
+            {
+                await _cvService.EditCertification(model);
+
+                return Json(new { success = true, message = "Certification updated successfully" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred while updating Certification: " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> EditLanguage(LanguageVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                                       .Select(e => e.ErrorMessage)
+                                       .ToList();
+                return Json(new { success = false, errors = errors });
+            }
+
+            try
+            {
+                await _cvService.EditLanguage(model);
+
+                return Json(new { success = true, message = "Language updated successfully" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred while updating Language: " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> EditInterest(InterestVM model)
+        {
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors)
+                                       .Select(e => e.ErrorMessage)
+                                       .ToList();
+                return Json(new { success = false, errors = errors });
+            }
+
+            try
+            {
+                await _cvService.EditInterest(model);
+
+                return Json(new { success = true, message = "Interest updated successfully" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred while updating Interest: " + ex.Message });
+            }
+        }
     }
 }
     

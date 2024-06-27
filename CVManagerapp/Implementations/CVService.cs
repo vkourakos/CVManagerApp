@@ -30,7 +30,7 @@ namespace CVManagerapp.Implementations
             await _db.SaveChangesAsync();
         }
 
-        public async Task AddEducationToCV(EducationVM educationVM)
+        public async Task<int> AddEducationToCV(EducationVM educationVM)
         {
             var education = new Education
             {
@@ -43,6 +43,7 @@ namespace CVManagerapp.Implementations
             };
             await _db.Educations.AddAsync(education);
             await _db.SaveChangesAsync();
+            return education.Id;
         }
 
         public async Task AddInterestToCV(InterestVM interestVM)
@@ -132,6 +133,11 @@ namespace CVManagerapp.Implementations
             await _db.SaveChangesAsync();
         }
 
+        public async Task EditCertification(CertificationVM certificationVM)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task EditCV(CVEditVM vm)
         {
             var cv = await GetCVByStudentId(vm.UserId);
@@ -146,6 +152,46 @@ namespace CVManagerapp.Implementations
 
             _db.Update(cv);
             await _db.SaveChangesAsync();
+        }
+
+        public async Task EditEducation(EducationVM educationVM)
+        {
+            var education = await _db.Educations.FindAsync(educationVM.Id);
+            if (education == null) return;
+
+            education.Institution = educationVM.Institution;
+            education.Degree = educationVM.Degree;
+            education.FieldOfStudy = educationVM.FieldOfStudy;
+            education.StartDate = educationVM.StartDate.Date;
+            education.EndDate = educationVM.EndDate.Date;
+
+            _db.Educations.Update(education);
+            await _db.SaveChangesAsync();
+        }
+
+        public async Task EditInterest(InterestVM interestVM)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task EditLanguage(LanguageVM languageVM)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task EditProject(ProjectVM projectVM)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task EditSkill(SkillVM skillVM)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task EditWorkExperience(WorkExperienceVM workExperienceVM)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<CV>? GetCVByStudentId(string studentId)
@@ -174,6 +220,7 @@ namespace CVManagerapp.Implementations
                     },
                     Educations = c.Educations.Select(e => new EducationVM
                     {
+                        Id = e.Id,
                         Institution = e.Institution,
                         Degree = e.Degree,
                         FieldOfStudy = e.FieldOfStudy,

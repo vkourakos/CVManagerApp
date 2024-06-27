@@ -76,6 +76,7 @@
                            style="cursor: pointer;"
                            data-table-id="educationTable"
                            data-row-edit-template-id="educationRowEditTemplate"
+                           data-id="@education.Id"
                            data-institution="@education.Institution"
                            data-degree="@education.Degree"
                            data-field-of-study="@education.FieldOfStudy"
@@ -111,7 +112,7 @@
 
     <template id="educationRowEditTemplate" style="display: none;">
         <tr>
-            <td><input type="text" name="Institution" required></td>
+            <td><input type="hidden" name="Id"><input type="text" name="Institution" required></td>
             <td><input type="text" name="Degree" required></td>
             <td><input type="text" name="FieldOfStudy" required></td>
             <td><input type="date" name="StartDate" required></td>
