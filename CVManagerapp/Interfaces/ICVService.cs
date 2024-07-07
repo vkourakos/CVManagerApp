@@ -26,7 +26,12 @@ namespace CVManagerapp.Interfaces
         Task EditCertification(CertificationVM certificationVM);
         Task EditLanguage(LanguageVM languageVM);
         Task EditInterest(InterestVM interestVM);
-
-
+        Task DeleteEducation(int id);
+        Task DeleteWorkExperience(int id);
+        Task DeleteSkill(int id);
+        Task DeleteProject(int id);
+        Task DeleteCertification(int id);
+        Task DeleteLanguage(int id);
+        Task DeleteInterest(int id);
     }
 }

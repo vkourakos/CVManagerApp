@@ -27,7 +27,7 @@
     $(document).on('click', '.saveRow', function () {
         var row = $(this).closest('tr');
         var tableId = row.closest('table').attr('id');
-        var tempId = Date.now().toString(); // temp id until we can retrieve the real one
+        var tempId = Date.now().toString();
 
         var data = {
             CVId: $('#CVId').val()
@@ -81,7 +81,7 @@
                 return;
         }
 
-        tempEntries[tempId] = data; // Store the data temporarily
+        tempEntries[tempId] = data;
 
         $.ajax({
             type: 'POST',
@@ -89,8 +89,8 @@
             data: data,
             success: function (response) {
                 if (response.success) {
-                    var entryId = response.id; // Get the real ID from the server response
-                    tempEntries[tempId].Id = entryId; // Update the temporary one with the real ID
+                    var entryId = response.id;
+                    tempEntries[tempId].Id = entryId;
 
                     row.remove();
                     var rowToRemove = document.getElementById('noEntriesRow');
@@ -109,11 +109,12 @@
                             newRow += ' data-' + key.toLowerCase() + '="' + data[key] + '"';
                         }
                     }
-                    newRow += ' data-id="' + entryId + '" data-table-id="' + tableId + '" data-row-edit-template-id="' + templateId + '"></i></td>';
+                    newRow += ' data-id="' + entryId + '" data-table-id="' + tableId + '" data-row-edit-template-id="' + templateId + '"></i>';
+                    newRow += '<i class="bi bi-trash deleteRow" style="cursor: pointer;" data-id="' + entryId + '" data-table-id="' + tableId + '"></i></td>';
                     newRow += '</tr>';
                     $('#' + tableId + ' tbody').append(newRow);
                     $('.addRow').prop('disabled', false);
-                    delete tempEntries[tempId]; // Remove the temporary data after adding the actual one
+                    delete tempEntries[tempId];
                 } else {
                     var errorHtml = '<ul>';
                     response.errors.forEach(function (error) {
@@ -165,7 +166,8 @@
         for (var key in originalData) {
             originalRow += ' data-' + key + '="' + originalData[key] + '"';
         }
-        originalRow += ' data-table-id="' + tableId + '" data-row-edit-template-id="' + templateId + '"></i></td>';
+        originalRow += ' data-table-id="' + tableId + '" data-row-edit-template-id="' + templateId + '"></i>';
+        originalRow += '<i class="bi bi-trash deleteRow" style="cursor: pointer;" data-id="' + originalData['id'] + '" data-table-id="' + tableId + '"></i></td>';
         originalRow += '</tr>';
 
         row.after(originalRow).remove();
@@ -249,7 +251,8 @@
                             newRow += ' data-' + key.toLowerCase() + '="' + data[key] + '"';
                         }
                     }
-                    newRow += ' data-id="' + data.Id + '" data-table-id="' + tableId + '" data-row-edit-template-id="' + templateId + '"></i></td>';
+                    newRow += ' data-id="' + data.Id + '" data-table-id="' + tableId + '" data-row-edit-template-id="' + templateId + '"></i>';
+                    newRow += '<i class="bi bi-trash deleteRow" style="cursor: pointer;" data-id="' + data.Id + '" data-table-id="' + tableId + '"></i></td>';
                     newRow += '</tr>';
                     $('#' + tableId + ' tbody').append(newRow);
                     $('.addRow').prop('disabled', false);
@@ -266,6 +269,62 @@
                 alert('An error occurred while saving the entry.');
             }
         });
+    });
+
+    $(document).on('click', '.deleteRow', function () {
+        var button = $(this);
+        var id = button.data('id');
+        var tableId = button.data('table-id');
+        var url = '';
+
+        switch (tableId) {
+            case 'educationTable':
+                url = '/CV/DeleteEducation';
+                break;
+            case 'workExperienceTable':
+                url = '/CV/DeleteWorkExperience';
+                break;
+            case 'skillTable':
+                url = '/CV/DeleteSkill';
+                break;
+            case 'projectTable':
+                url = '/CV/DeleteProject';
+                break;
+            case 'certificationTable':
+                url = '/CV/DeleteCertification';
+                break;
+            case 'languageTable':
+                url = '/CV/DeleteLanguage';
+                break;
+            case 'interestTable':
+                url = '/CV/DeleteInterest';
+                break;
+            default:
+                alert('Unknown table id: ' + tableId);
+                return;
+        }
+
+        if (confirm('Are you sure you want to delete this entry?')) {
+            $.ajax({
+                type: 'POST',
+                url: url,
+                data: { id: id },
+                success: function (response) {
+                    if (response.success) {
+                        button.closest('tr').remove();
+                        if ($('#' + tableId + ' tbody tr').length === 0) {
+                            var colspan = $('#' + tableId + ' thead th').length;
+                            $('#' + tableId + ' tbody').append('<tr id="noEntriesRow"><td colspan="' + colspan + '">No entries found.</td></tr>');
+                        }
+                    } else {
+                        alert('An error occurred while deleting the entry: ' + response.message);
+                    }
+                },
+                error: function () {
+                    alert('An error occurred while deleting the entry.');
+                }
+            });
+        }
     });
 
     function formatDate(dateStr) {

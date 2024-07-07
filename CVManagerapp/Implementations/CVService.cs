@@ -133,10 +133,80 @@ namespace CVManagerapp.Implementations
             await _db.SaveChangesAsync();
         }
 
+        public async Task DeleteCertification(int id)
+        {
+            var certification = await _db.Certifications.FindAsync(id);
+            if (certification != null)
+            {
+                _db.Certifications.Remove(certification);
+                await _db.SaveChangesAsync();
+            }
+        }
+
         public async Task DeleteCV(CV cv)
         {
             _db.CVs.Remove(cv);
             await _db.SaveChangesAsync();
+        }
+
+        public async Task DeleteEducation(int id)
+        {
+            var education = await _db.Educations.FindAsync(id);
+            if (education != null)
+            {
+                _db.Educations.Remove(education);
+                await _db.SaveChangesAsync();
+            }
+        }
+
+        public async Task DeleteInterest(int id)
+        {
+            var interest = await _db.Interests.FindAsync(id);
+            if (interest != null)
+            {
+                _db.Interests.Remove(interest);
+                await _db.SaveChangesAsync();
+            }
+        }
+
+        public async Task DeleteLanguage(int id)
+        {
+            var language = await _db.Languages.FindAsync(id);
+            if (language != null)
+            {
+                _db.Languages.Remove(language);
+                await _db.SaveChangesAsync();
+            }
+        }
+
+        public async Task DeleteProject(int id)
+        {
+            var project = await _db.Projects.FindAsync(id);
+            if (project != null)
+            {
+                _db.Projects.Remove(project);
+                await _db.SaveChangesAsync();
+            }
+        }
+
+        public async Task DeleteSkill(int id)
+        {
+            var skill = await _db.Skills.FindAsync(id);
+            if (skill != null)
+            {
+                _db.Skills.Remove(skill);
+                await _db.SaveChangesAsync();
+            }
+        }
+
+        public async Task DeleteWorkExperience(int id)
+        {
+            var workExperience = await _db.WorkExperiences.FindAsync(id);
+            if (workExperience != null)
+            {
+                _db.WorkExperiences.Remove(workExperience);
+                await _db.SaveChangesAsync();
+            }
         }
 
         public async Task EditCertification(CertificationVM certificationVM)

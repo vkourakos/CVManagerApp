@@ -12,13 +12,13 @@
         <a class="btn btn-primary" asp-action="Edit" asp-route-studentId="@Model.CV.UserId">Edit Personal Info</a>
         <a class="btn btn-danger" asp-action="Delete" asp-route-studentId="@Model.CV.UserId">Delete CV</a>
     </div>
-    
+
 </div>
 <hr />
 
 <div>
     <h4>Personal Information</h4>
-    
+
     <dl class="row">
         <dt class="col-sm-2">First Name</dt>
         <dd class="col-sm-10">@Model.CV.FirstName</dd>
@@ -49,7 +49,6 @@
         <h4 style="margin-bottom: 0;">Education</h4>
         <button class="btn btn-primary addRow" id="addEducationBtn" data-table-id="educationTable" data-row-template-id="educationRowTemplate">Add Education</button>
     </div>
-    @* <form id="educationForm"> *@
     <input value="@Model.CV.Id" type="hidden" id="CVId" name="CVId" />
     <table id="educationTable" class="table">
         <thead>
@@ -73,7 +72,7 @@
                     <td>@education.EndDate.ToString("dd/MM/yyyy")</td>
                     <td>
                         <i class="bi bi-pencil-square addEditRow"
-                           style="cursor: pointer;"
+                           style="cursor: pointer; margin-right: 5px"
                            data-table-id="educationTable"
                            data-row-edit-template-id="educationRowEditTemplate"
                            data-id="@education.Id"
@@ -82,13 +81,17 @@
                            data-field-of-study="@education.FieldOfStudy"
                            data-start-date="@education.StartDate.ToString("yyyy-MM-dd")"
                            data-end-date="@education.EndDate.ToString("yyyy-MM-dd")"></i>
+                        <i class="bi bi-trash deleteRow"
+                           style="cursor: pointer;"
+                           data-id="@education.Id"
+                           data-table-id="educationTable"></i>
                     </td>
                 </tr>
             }
             @if (!Model.Educations.Any())
             {
                 <tr id="noEntriesRow">
-                    <td colspan="5">No Education entries  found.</td>
+                    <td colspan="6">No Education entries found.</td>
                 </tr>
             }
 
@@ -124,8 +127,9 @@
             </td>
         </tr>
     </template>
-    @* </form> *@
 </div>
+
+<!-- Work Experience Section -->
 <div style="margin-bottom: 20px;">
     <div class="d-flex justify-content-between align-items-center">
         <h4 style="margin-bottom: 0;">Work Experience</h4>
@@ -141,7 +145,6 @@
                 <th>End Date</th>
                 <th>Description</th>
                 <th>Action</th>
-
             </tr>
         </thead>
         <tbody>
@@ -153,23 +156,28 @@
                     <td>@workexperience.StartDate.ToString("dd/MM/yyyy")</td>
                     <td>@workexperience.EndDate.ToString("dd/MM/yyyy")</td>
                     <td>@workexperience.Description</td>
-                    <td><i class="bi bi-pencil-square addEditRow"
-                           style="cursor: pointer;"
+                    <td>
+                        <i class="bi bi-pencil-square addEditRow"
+                           style="cursor: pointer; margin-right: 5px"
                            data-table-id="workExperienceTable"
                            data-row-edit-template-id="workExperienceRowEditTemplate"
                            data-id="@workexperience.Id"
                            data-company="@workexperience.Company"
-                           data-position="@workexperience.Position"                           
+                           data-position="@workexperience.Position"
                            data-start-date="@workexperience.StartDate.ToString("yyyy-MM-dd")"
                            data-end-date="@workexperience.EndDate.ToString("yyyy-MM-dd")"
                            data-description="@workexperience.Description"></i>
+                        <i class="bi bi-trash deleteRow"
+                           style="cursor: pointer;"
+                           data-id="@workexperience.Id"
+                           data-table-id="workExperienceTable"></i>
                     </td>
                 </tr>
             }
             @if (!Model.workexperiences.Any())
             {
                 <tr id="noEntriesRow">
-                    <td colspan="5">No Work experience found.</td>
+                    <td colspan="6">No Work experience found.</td>
                 </tr>
             }
         </tbody>
@@ -185,7 +193,6 @@
                 <i class="bi bi-floppy saveRow" data-save-function="saveWorkExperience" style="cursor: pointer; margin-right: 10px;"></i>
                 <i class="bi bi-x-circle-fill cancelRow" style="cursor: pointer;"></i>
                 <div class="validationErrors"></div>
-
             </td>
         </tr>
     </template>
@@ -193,7 +200,7 @@
     <template id="workExperienceRowEditTemplate" style="display: none;">
         <tr>
             <td><input type="hidden" name="Id"><input type="text" name="Company" required></td>
-            <td><input type="text" name="Position" required></td>            
+            <td><input type="text" name="Position" required></td>
             <td><input type="date" name="StartDate" required></td>
             <td><input type="date" name="EndDate" required></td>
             <td><input type="text" name="Description" required></td>
@@ -206,6 +213,7 @@
     </template>
 </div>
 
+<!-- Skills Section -->
 <div style="margin-bottom: 20px;">
     <div class="d-flex justify-content-between align-items-center">
         <h4 style="margin-bottom: 0;">Skills</h4>
@@ -226,11 +234,15 @@
                     <td>@skill.Name</td>
                     <td>
                         <i class="bi bi-pencil-square addEditRow"
-                           style="cursor: pointer;"
+                           style="cursor: pointer; margin-right: 5px"
                            data-table-id="skillTable"
                            data-row-edit-template-id="skillRowEditTemplate"
                            data-id="@skill.Id"
                            data-name="@skill.Name"></i>
+                        <i class="bi bi-trash deleteRow"
+                           style="cursor: pointer;"
+                           data-id="@skill.Id"
+                           data-table-id="skillTable"></i>
                     </td>
                 </tr>
             }
@@ -264,6 +276,7 @@
     </template>
 </div>
 
+<!-- Projects Section -->
 <div style="margin-bottom: 20px;">
     <div class="d-flex justify-content-between align-items-center">
         <h4 style="margin-bottom: 0;">Projects</h4>
@@ -290,7 +303,7 @@
                     <td>@project.EndDate.ToString("dd/MM/yyyy")</td>
                     <td>
                         <i class="bi bi-pencil-square addEditRow"
-                           style="cursor: pointer;"
+                           style="cursor: pointer; margin-right: 5px"
                            data-table-id="projectTable"
                            data-row-edit-template-id="projectRowEditTemplate"
                            data-id="@project.Id"
@@ -298,6 +311,10 @@
                            data-description="@project.Description"
                            data-start-date="@project.StartDate.ToString("yyyy-MM-dd")"
                            data-end-date="@project.EndDate.ToString("yyyy-MM-dd")"></i>
+                        <i class="bi bi-trash deleteRow"
+                           style="cursor: pointer;"
+                           data-id="@project.Id"
+                           data-table-id="projectTable"></i>
                     </td>
                 </tr>
             }
@@ -336,6 +353,8 @@
         </tr>
     </template>
 </div>
+
+<!-- Certifications Section -->
 <div style="margin-bottom: 20px;">
     <div class="d-flex justify-content-between align-items-center">
         <h4 style="margin-bottom: 0;">Certifications</h4>
@@ -360,13 +379,17 @@
                     <td>@certification.IssuingOrganization</td>
                     <td>
                         <i class="bi bi-pencil-square addEditRow"
-                           style="cursor: pointer;"
+                           style="cursor: pointer; margin-right: 5px"
                            data-table-id="certificationTable"
                            data-row-edit-template-id="certificationRowEditTemplate"
                            data-id="@certification.Id"
                            data-name="@certification.Name"
                            data-issue-date="@certification.IssueDate.ToString("yyyy-MM-dd")"
                            data-issuing-organization="@certification.IssuingOrganization"></i>
+                        <i class="bi bi-trash deleteRow"
+                           style="cursor: pointer;"
+                           data-id="@certification.Id"
+                           data-table-id="certificationTable"></i>
                     </td>
                 </tr>
             }
@@ -403,6 +426,8 @@
         </tr>
     </template>
 </div>
+
+<!-- Languages Section -->
 <div style="margin-bottom: 20px;">
     <div class="d-flex justify-content-between align-items-center">
         <h4 style="margin-bottom: 0;">Languages</h4>
@@ -425,12 +450,16 @@
                     <td>@language.ProficiencyLevel</td>
                     <td>
                         <i class="bi bi-pencil-square addEditRow"
-                           style="cursor: pointer;"
+                           style="cursor: pointer; margin-right: 5px"
                            data-table-id="languageTable"
                            data-row-edit-template-id="languageRowEditTemplate"
                            data-id="@language.Id"
                            data-name="@language.Name"
                            data-proficiency-level="@language.ProficiencyLevel"></i>
+                        <i class="bi bi-trash deleteRow"
+                           style="cursor: pointer;"
+                           data-id="@language.Id"
+                           data-table-id="languageTable"></i>
                     </td>
                 </tr>
             }
@@ -465,6 +494,8 @@
         </tr>
     </template>
 </div>
+
+<!-- Interests Section -->
 <div style="margin-bottom: 20px;">
     <div class="d-flex justify-content-between align-items-center">
         <h4 style="margin-bottom: 0;">Interests</h4>
@@ -485,11 +516,15 @@
                     <td>@interest.Name</td>
                     <td>
                         <i class="bi bi-pencil-square addEditRow"
-                           style="cursor: pointer;"
+                           style="cursor: pointer; margin-right: 5px"
                            data-table-id="interestTable"
                            data-row-edit-template-id="interestRowEditTemplate"
                            data-id="@interest.Id"
                            data-name="@interest.Name"></i>
+                        <i class="bi bi-trash deleteRow"
+                           style="cursor: pointer;"
+                           data-id="@interest.Id"
+                           data-table-id="interestTable"></i>
                     </td>
                 </tr>
             }
@@ -522,9 +557,6 @@
         </tr>
     </template>
 </div>
-
-
-
 
 @section Scripts {
     <script src="~/js/details.js"></script>

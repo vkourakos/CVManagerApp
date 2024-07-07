@@ -460,6 +460,102 @@ namespace CVManagerapp.Controllers
                 return Json(new { success = false, message = "An error occurred while updating Interest: " + ex.Message });
             }
         }
+
+        [HttpPost]
+        public async Task<JsonResult> DeleteEducation(int id)
+        {
+            try
+            {
+                await _cvService.DeleteEducation(id);
+                return Json(new { success = true, message = "Education deleted successfully" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred while deleting education: " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> DeleteWorkExperience(int id)
+        {
+            try
+            {
+                await _cvService.DeleteWorkExperience(id);
+                return Json(new { success = true, message = "Work Experience deleted successfully" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred while deleting work experience: " + ex.Message });
+            }
+        }
+        [HttpPost]
+        public async Task<JsonResult> DeleteSkill(int id)
+        {
+            try
+            {
+                await _cvService.DeleteSkill(id);
+                return Json(new { success = true, message = "Skill deleted successfully" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred while deleting Skill: " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> DeleteProject(int id)
+        {
+            try
+            {
+                await _cvService.DeleteProject(id);
+                return Json(new { success = true, message = "Project deleted successfully" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred while deleting Project: " + ex.Message });
+            }
+        }
+        [HttpPost]
+        public async Task<JsonResult> DeleteCertification(int id)
+        {
+            try
+            {
+                await _cvService.DeleteCertification(id);
+                return Json(new { success = true, message = "Certification deleted successfully" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred while deleting Certification: " + ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> DeleteLanguage(int id)
+        {
+            try
+            {
+                await _cvService.DeleteLanguage(id);
+                return Json(new { success = true, message = "Language deleted successfully" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred while deleting Language: " + ex.Message });
+            }
+        }
+        [HttpPost]
+        public async Task<JsonResult> DeleteInterest(int id)
+        {
+            try
+            {
+                await _cvService.DeleteInterest(id);
+                return Json(new { success = true, message = "Interest deleted successfully" });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = "An error occurred while deleting Interest: " + ex.Message });
+            }
+        }
+
     }
 }
     
