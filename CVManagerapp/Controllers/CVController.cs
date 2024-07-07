@@ -74,9 +74,7 @@ namespace CVManagerapp.Controllers
             return RedirectToAction("Details", new { studentId = cVCreateVM.UserId });
 
         }
-        //todo add edit functionality
-        //todo add delete functionality
-        //todo add language list for languages and add issuing organization field
+        
         [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(string studentId)
         {

@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CVManagerapp.Controllers
 {
+    [Authorize(Roles = "student")]
     public class StudentController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -18,7 +19,7 @@ namespace CVManagerapp.Controllers
             _userManager = userManager;
             _cvService = cvService;
         }
-        [Authorize(Roles = "student")]
+        
         public async Task<IActionResult> MyCV()
         {
             var user = await _userManager.GetUserAsync(User);
