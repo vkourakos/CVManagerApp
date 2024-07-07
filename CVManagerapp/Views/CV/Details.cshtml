@@ -9,10 +9,12 @@
         <h5 style="margin-bottom: 0;">@Model.CV.Title</h5>
     </div>
     <div>
-        <a class="btn btn-primary" asp-action="Edit" asp-route-studentId="@Model.CV.UserId">Edit Personal Info</a>
-        <a class="btn btn-danger" asp-action="Delete" asp-route-studentId="@Model.CV.UserId">Delete CV</a>
+        @if (User.IsInRole(UserRoles.Admin))
+        {
+            <a class="btn btn-primary" asp-action="Edit" asp-route-studentId="@Model.CV.UserId">Edit Personal Info</a>
+            <a class="btn btn-danger" asp-action="Delete" asp-route-studentId="@Model.CV.UserId">Delete CV</a>
+        }
     </div>
-
 </div>
 <hr />
 
@@ -40,14 +42,16 @@
 
         <dt class="col-sm-2">Phone</dt>
         <dd class="col-sm-10">@Model.CV.Phone</dd>
-
     </dl>
 </div>
 
 <div style="margin-bottom: 20px;">
     <div class="d-flex justify-content-between align-items-center">
         <h4 style="margin-bottom: 0;">Education</h4>
-        <button class="btn btn-primary addRow" id="addEducationBtn" data-table-id="educationTable" data-row-template-id="educationRowTemplate">Add Education</button>
+        @if (User.IsInRole(UserRoles.Admin))
+        {
+            <button class="btn btn-primary addRow" id="addEducationBtn" data-table-id="educationTable" data-row-template-id="educationRowTemplate">Add Education</button>
+        }
     </div>
     <input value="@Model.CV.Id" type="hidden" id="CVId" name="CVId" />
     <table id="educationTable" class="table">
@@ -71,20 +75,23 @@
                     <td>@education.StartDate.ToString("dd/MM/yyyy")</td>
                     <td>@education.EndDate.ToString("dd/MM/yyyy")</td>
                     <td>
-                        <i class="bi bi-pencil-square addEditRow"
-                           style="cursor: pointer; margin-right: 5px"
-                           data-table-id="educationTable"
-                           data-row-edit-template-id="educationRowEditTemplate"
-                           data-id="@education.Id"
-                           data-institution="@education.Institution"
-                           data-degree="@education.Degree"
-                           data-field-of-study="@education.FieldOfStudy"
-                           data-start-date="@education.StartDate.ToString("yyyy-MM-dd")"
-                           data-end-date="@education.EndDate.ToString("yyyy-MM-dd")"></i>
-                        <i class="bi bi-trash deleteRow"
-                           style="cursor: pointer;"
-                           data-id="@education.Id"
-                           data-table-id="educationTable"></i>
+                        @if (User.IsInRole(UserRoles.Admin))
+                        {
+                            <i class="bi bi-pencil-square addEditRow"
+                               style="cursor: pointer; margin-right: 5px"
+                               data-table-id="educationTable"
+                               data-row-edit-template-id="educationRowEditTemplate"
+                               data-id="@education.Id"
+                               data-institution="@education.Institution"
+                               data-degree="@education.Degree"
+                               data-field-of-study="@education.FieldOfStudy"
+                               data-start-date="@education.StartDate.ToString("yyyy-MM-dd")"
+                               data-end-date="@education.EndDate.ToString("yyyy-MM-dd")"></i>
+                            <i class="bi bi-trash deleteRow"
+                               style="cursor: pointer;"
+                               data-id="@education.Id"
+                               data-table-id="educationTable"></i>
+                        }
                     </td>
                 </tr>
             }
@@ -94,7 +101,6 @@
                     <td colspan="6">No Education entries found.</td>
                 </tr>
             }
-
         </tbody>
     </table>
 
@@ -133,7 +139,10 @@
 <div style="margin-bottom: 20px;">
     <div class="d-flex justify-content-between align-items-center">
         <h4 style="margin-bottom: 0;">Work Experience</h4>
-        <button class="btn btn-primary addRow" id="addWorkExperienceBtn" data-table-id="workExperienceTable" data-row-template-id="workExperienceRowTemplate">Add Work Experience</button>
+        @if (User.IsInRole(UserRoles.Admin))
+        {
+            <button class="btn btn-primary addRow" id="addWorkExperienceBtn" data-table-id="workExperienceTable" data-row-template-id="workExperienceRowTemplate">Add Work Experience</button>
+        }
     </div>
     <input value="@Model.CV.Id" type="hidden" id="CVId" name="CVId" />
     <table id="workExperienceTable" class="table">
@@ -157,20 +166,23 @@
                     <td>@workexperience.EndDate.ToString("dd/MM/yyyy")</td>
                     <td>@workexperience.Description</td>
                     <td>
-                        <i class="bi bi-pencil-square addEditRow"
-                           style="cursor: pointer; margin-right: 5px"
-                           data-table-id="workExperienceTable"
-                           data-row-edit-template-id="workExperienceRowEditTemplate"
-                           data-id="@workexperience.Id"
-                           data-company="@workexperience.Company"
-                           data-position="@workexperience.Position"
-                           data-start-date="@workexperience.StartDate.ToString("yyyy-MM-dd")"
-                           data-end-date="@workexperience.EndDate.ToString("yyyy-MM-dd")"
-                           data-description="@workexperience.Description"></i>
-                        <i class="bi bi-trash deleteRow"
-                           style="cursor: pointer;"
-                           data-id="@workexperience.Id"
-                           data-table-id="workExperienceTable"></i>
+                        @if (User.IsInRole(UserRoles.Admin))
+                        {
+                            <i class="bi bi-pencil-square addEditRow"
+                               style="cursor: pointer; margin-right: 5px"
+                               data-table-id="workExperienceTable"
+                               data-row-edit-template-id="workExperienceRowEditTemplate"
+                               data-id="@workexperience.Id"
+                               data-company="@workexperience.Company"
+                               data-position="@workexperience.Position"
+                               data-start-date="@workexperience.StartDate.ToString("yyyy-MM-dd")"
+                               data-end-date="@workexperience.EndDate.ToString("yyyy-MM-dd")"
+                               data-description="@workexperience.Description"></i>
+                            <i class="bi bi-trash deleteRow"
+                               style="cursor: pointer;"
+                               data-id="@workexperience.Id"
+                               data-table-id="workExperienceTable"></i>
+                        }
                     </td>
                 </tr>
             }
@@ -217,7 +229,10 @@
 <div style="margin-bottom: 20px;">
     <div class="d-flex justify-content-between align-items-center">
         <h4 style="margin-bottom: 0;">Skills</h4>
-        <button class="btn btn-primary addRow" id="addSkillBtn" data-table-id="skillTable" data-row-template-id="skillRowTemplate">Add Skill</button>
+        @if (User.IsInRole(UserRoles.Admin))
+        {
+            <button class="btn btn-primary addRow" id="addSkillBtn" data-table-id="skillTable" data-row-template-id="skillRowTemplate">Add Skill</button>
+        }
     </div>
     <input value="@Model.CV.Id" type="hidden" id="CVId" name="CVId" />
     <table id="skillTable" class="table">
@@ -233,16 +248,19 @@
                 <tr>
                     <td>@skill.Name</td>
                     <td>
-                        <i class="bi bi-pencil-square addEditRow"
-                           style="cursor: pointer; margin-right: 5px"
-                           data-table-id="skillTable"
-                           data-row-edit-template-id="skillRowEditTemplate"
-                           data-id="@skill.Id"
-                           data-name="@skill.Name"></i>
-                        <i class="bi bi-trash deleteRow"
-                           style="cursor: pointer;"
-                           data-id="@skill.Id"
-                           data-table-id="skillTable"></i>
+                        @if (User.IsInRole(UserRoles.Admin))
+                        {
+                            <i class="bi bi-pencil-square addEditRow"
+                               style="cursor: pointer; margin-right: 5px"
+                               data-table-id="skillTable"
+                               data-row-edit-template-id="skillRowEditTemplate"
+                               data-id="@skill.Id"
+                               data-name="@skill.Name"></i>
+                            <i class="bi bi-trash deleteRow"
+                               style="cursor: pointer;"
+                               data-id="@skill.Id"
+                               data-table-id="skillTable"></i>
+                        }
                     </td>
                 </tr>
             }
@@ -280,7 +298,10 @@
 <div style="margin-bottom: 20px;">
     <div class="d-flex justify-content-between align-items-center">
         <h4 style="margin-bottom: 0;">Projects</h4>
-        <button class="btn btn-primary addRow" id="addProjectBtn" data-table-id="projectTable" data-row-template-id="projectRowTemplate">Add Project</button>
+        @if (User.IsInRole(UserRoles.Admin))
+        {
+            <button class="btn btn-primary addRow" id="addProjectBtn" data-table-id="projectTable" data-row-template-id="projectRowTemplate">Add Project</button>
+        }
     </div>
     <input value="@Model.CV.Id" type="hidden" id="CVId" name="CVId" />
     <table id="projectTable" class="table">
@@ -302,19 +323,22 @@
                     <td>@project.StartDate.ToString("dd/MM/yyyy")</td>
                     <td>@project.EndDate.ToString("dd/MM/yyyy")</td>
                     <td>
-                        <i class="bi bi-pencil-square addEditRow"
-                           style="cursor: pointer; margin-right: 5px"
-                           data-table-id="projectTable"
-                           data-row-edit-template-id="projectRowEditTemplate"
-                           data-id="@project.Id"
-                           data-title="@project.Title"
-                           data-description="@project.Description"
-                           data-start-date="@project.StartDate.ToString("yyyy-MM-dd")"
-                           data-end-date="@project.EndDate.ToString("yyyy-MM-dd")"></i>
-                        <i class="bi bi-trash deleteRow"
-                           style="cursor: pointer;"
-                           data-id="@project.Id"
-                           data-table-id="projectTable"></i>
+                        @if (User.IsInRole(UserRoles.Admin))
+                        {
+                            <i class="bi bi-pencil-square addEditRow"
+                               style="cursor: pointer; margin-right: 5px"
+                               data-table-id="projectTable"
+                               data-row-edit-template-id="projectRowEditTemplate"
+                               data-id="@project.Id"
+                               data-title="@project.Title"
+                               data-description="@project.Description"
+                               data-start-date="@project.StartDate.ToString("yyyy-MM-dd")"
+                               data-end-date="@project.EndDate.ToString("yyyy-MM-dd")"></i>
+                            <i class="bi bi-trash deleteRow"
+                               style="cursor: pointer;"
+                               data-id="@project.Id"
+                               data-table-id="projectTable"></i>
+                        }
                     </td>
                 </tr>
             }
@@ -358,7 +382,10 @@
 <div style="margin-bottom: 20px;">
     <div class="d-flex justify-content-between align-items-center">
         <h4 style="margin-bottom: 0;">Certifications</h4>
-        <button class="btn btn-primary addRow" id="addCertificationBtn" data-table-id="certificationTable" data-row-template-id="certificationRowTemplate">Add Certification</button>
+        @if (User.IsInRole(UserRoles.Admin))
+        {
+            <button class="btn btn-primary addRow" id="addCertificationBtn" data-table-id="certificationTable" data-row-template-id="certificationRowTemplate">Add Certification</button>
+        }
     </div>
     <input value="@Model.CV.Id" type="hidden" id="CVId" name="CVId" />
     <table id="certificationTable" class="table">
@@ -378,18 +405,21 @@
                     <td>@certification.IssueDate.ToString("dd/MM/yyyy")</td>
                     <td>@certification.IssuingOrganization</td>
                     <td>
-                        <i class="bi bi-pencil-square addEditRow"
-                           style="cursor: pointer; margin-right: 5px"
-                           data-table-id="certificationTable"
-                           data-row-edit-template-id="certificationRowEditTemplate"
-                           data-id="@certification.Id"
-                           data-name="@certification.Name"
-                           data-issue-date="@certification.IssueDate.ToString("yyyy-MM-dd")"
-                           data-issuing-organization="@certification.IssuingOrganization"></i>
-                        <i class="bi bi-trash deleteRow"
-                           style="cursor: pointer;"
-                           data-id="@certification.Id"
-                           data-table-id="certificationTable"></i>
+                        @if (User.IsInRole(UserRoles.Admin))
+                        {
+                            <i class="bi bi-pencil-square addEditRow"
+                               style="cursor: pointer; margin-right: 5px"
+                               data-table-id="certificationTable"
+                               data-row-edit-template-id="certificationRowEditTemplate"
+                               data-id="@certification.Id"
+                               data-name="@certification.Name"
+                               data-issue-date="@certification.IssueDate.ToString("yyyy-MM-dd")"
+                               data-issuing-organization="@certification.IssuingOrganization"></i>
+                            <i class="bi bi-trash deleteRow"
+                               style="cursor: pointer;"
+                               data-id="@certification.Id"
+                               data-table-id="certificationTable"></i>
+                        }
                     </td>
                 </tr>
             }
@@ -431,7 +461,10 @@
 <div style="margin-bottom: 20px;">
     <div class="d-flex justify-content-between align-items-center">
         <h4 style="margin-bottom: 0;">Languages</h4>
-        <button class="btn btn-primary addRow" id="addLanguageBtn" data-table-id="languageTable" data-row-template-id="languageRowTemplate">Add Language</button>
+        @if (User.IsInRole(UserRoles.Admin))
+        {
+            <button class="btn btn-primary addRow" id="addLanguageBtn" data-table-id="languageTable" data-row-template-id="languageRowTemplate">Add Language</button>
+        }
     </div>
     <input value="@Model.CV.Id" type="hidden" id="CVId" name="CVId" />
     <table id="languageTable" class="table">
@@ -449,17 +482,20 @@
                     <td>@language.Name</td>
                     <td>@language.ProficiencyLevel</td>
                     <td>
-                        <i class="bi bi-pencil-square addEditRow"
-                           style="cursor: pointer; margin-right: 5px"
-                           data-table-id="languageTable"
-                           data-row-edit-template-id="languageRowEditTemplate"
-                           data-id="@language.Id"
-                           data-name="@language.Name"
-                           data-proficiency-level="@language.ProficiencyLevel"></i>
-                        <i class="bi bi-trash deleteRow"
-                           style="cursor: pointer;"
-                           data-id="@language.Id"
-                           data-table-id="languageTable"></i>
+                        @if (User.IsInRole(UserRoles.Admin))
+                        {
+                            <i class="bi bi-pencil-square addEditRow"
+                               style="cursor: pointer; margin-right: 5px"
+                               data-table-id="languageTable"
+                               data-row-edit-template-id="languageRowEditTemplate"
+                               data-id="@language.Id"
+                               data-name="@language.Name"
+                               data-proficiency-level="@language.ProficiencyLevel"></i>
+                            <i class="bi bi-trash deleteRow"
+                               style="cursor: pointer;"
+                               data-id="@language.Id"
+                               data-table-id="languageTable"></i>
+                        }
                     </td>
                 </tr>
             }
@@ -499,7 +535,10 @@
 <div style="margin-bottom: 20px;">
     <div class="d-flex justify-content-between align-items-center">
         <h4 style="margin-bottom: 0;">Interests</h4>
-        <button class="btn btn-primary addRow" id="addInterestBtn" data-table-id="interestTable" data-row-template-id="interestRowTemplate">Add Interest</button>
+        @if (User.IsInRole(UserRoles.Admin))
+        {
+            <button class="btn btn-primary addRow" id="addInterestBtn" data-table-id="interestTable" data-row-template-id="interestRowTemplate">Add Interest</button>
+        }
     </div>
     <input value="@Model.CV.Id" type="hidden" id="CVId" name="CVId" />
     <table id="interestTable" class="table">
@@ -515,16 +554,19 @@
                 <tr>
                     <td>@interest.Name</td>
                     <td>
-                        <i class="bi bi-pencil-square addEditRow"
-                           style="cursor: pointer; margin-right: 5px"
-                           data-table-id="interestTable"
-                           data-row-edit-template-id="interestRowEditTemplate"
-                           data-id="@interest.Id"
-                           data-name="@interest.Name"></i>
-                        <i class="bi bi-trash deleteRow"
-                           style="cursor: pointer;"
-                           data-id="@interest.Id"
-                           data-table-id="interestTable"></i>
+                        @if (User.IsInRole(UserRoles.Admin))
+                        {
+                            <i class="bi bi-pencil-square addEditRow"
+                               style="cursor: pointer; margin-right: 5px"
+                               data-table-id="interestTable"
+                               data-row-edit-template-id="interestRowEditTemplate"
+                               data-id="@interest.Id"
+                               data-name="@interest.Name"></i>
+                            <i class="bi bi-trash deleteRow"
+                               style="cursor: pointer;"
+                               data-id="@interest.Id"
+                               data-table-id="interestTable"></i>
+                        }
                     </td>
                 </tr>
             }

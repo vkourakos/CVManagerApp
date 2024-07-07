@@ -1,11 +1,13 @@
 ﻿using CVManagerapp.Data;
 using CVManagerapp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using X.PagedList;
 
 namespace CVManagerapp.Controllers
 {
+    [Authorize(Roles = "admin")]
     public class AdminController : Controller
     {
         private readonly ApplicationDbContext _dbContext;
@@ -16,7 +18,7 @@ namespace CVManagerapp.Controllers
             _dbContext = dbContext;
             _userManager = userManager;
         }
-
+        
         public async Task<IActionResult> ListStudents(int page = 1)
         {
             const int pageSize = 10;

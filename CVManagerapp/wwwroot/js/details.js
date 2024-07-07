@@ -8,6 +8,7 @@
         var template = $('#' + templateId).html();
 
         $('#' + tableId + ' tbody').append(template);
+        $('#' + tableId + ' tbody tr:last-child').find('.saveRow').attr('data-template-id', templateId); // Set the templateId
         $('.addRow').prop('disabled', true);
     });
 
@@ -28,6 +29,7 @@
         var row = $(this).closest('tr');
         var tableId = row.closest('table').attr('id');
         var tempId = Date.now().toString();
+        var templateId = $(this).data('template-id'); // Capture templateId here
 
         var data = {
             CVId: $('#CVId').val()
@@ -103,14 +105,14 @@
                             newRow += '<td>' + data[key] + '</td>';
                         }
                     }
-                    newRow += '<td><i class="bi bi-pencil-square addEditRow" style="cursor: pointer;"';
+                    newRow += '<td><i class="bi bi-pencil-square addEditRow" style="cursor: pointer; margin-right: 5px;"';
                     for (var key in data) {
                         if (key !== 'CVId') {
                             newRow += ' data-' + key.toLowerCase() + '="' + data[key] + '"';
                         }
                     }
                     newRow += ' data-id="' + entryId + '" data-table-id="' + tableId + '" data-row-edit-template-id="' + templateId + '"></i>';
-                    newRow += '<i class="bi bi-trash deleteRow" style="cursor: pointer;" data-id="' + entryId + '" data-table-id="' + tableId + '"></i></td>';
+                    newRow += '<i class="bi bi-trash deleteRow" style="cursor: pointer; margin-left: 5px;" data-id="' + entryId + '" data-table-id="' + tableId + '"></i></td>';
                     newRow += '</tr>';
                     $('#' + tableId + ' tbody').append(newRow);
                     $('.addRow').prop('disabled', false);
@@ -162,12 +164,12 @@
                 originalRow += '<td>' + originalData[key] + '</td>';
             }
         }
-        originalRow += '<td><i class="bi bi-pencil-square addEditRow" style="cursor: pointer;"';
+        originalRow += '<td><i class="bi bi-pencil-square addEditRow" style="cursor: pointer; margin-right: 5px;"';
         for (var key in originalData) {
             originalRow += ' data-' + key + '="' + originalData[key] + '"';
         }
         originalRow += ' data-table-id="' + tableId + '" data-row-edit-template-id="' + templateId + '"></i>';
-        originalRow += '<i class="bi bi-trash deleteRow" style="cursor: pointer;" data-id="' + originalData['id'] + '" data-table-id="' + tableId + '"></i></td>';
+        originalRow += '<i class="bi bi-trash deleteRow" style="cursor: pointer; margin-left: 5px;" data-id="' + originalData['id'] + '" data-table-id="' + tableId + '"></i></td>';
         originalRow += '</tr>';
 
         row.after(originalRow).remove();
@@ -245,14 +247,14 @@
                             newRow += '<td>' + data[key] + '</td>';
                         }
                     }
-                    newRow += '<td><i class="bi bi-pencil-square addEditRow" style="cursor: pointer;"';
+                    newRow += '<td><i class="bi bi-pencil-square addEditRow" style="cursor: pointer; margin-right: 5px;"';
                     for (var key in data) {
                         if (key !== 'CVId') {
                             newRow += ' data-' + key.toLowerCase() + '="' + data[key] + '"';
                         }
                     }
                     newRow += ' data-id="' + data.Id + '" data-table-id="' + tableId + '" data-row-edit-template-id="' + templateId + '"></i>';
-                    newRow += '<i class="bi bi-trash deleteRow" style="cursor: pointer;" data-id="' + data.Id + '" data-table-id="' + tableId + '"></i></td>';
+                    newRow += '<i class="bi bi-trash deleteRow" style="cursor: pointer; margin-left: 5px;" data-id="' + data.Id + '" data-table-id="' + tableId + '"></i></td>';
                     newRow += '</tr>';
                     $('#' + tableId + ' tbody').append(newRow);
                     $('.addRow').prop('disabled', false);

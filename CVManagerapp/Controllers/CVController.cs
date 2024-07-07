@@ -2,6 +2,7 @@
 using CVManagerapp.Interfaces;
 using CVManagerapp.Models;
 using CVManagerapp.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
@@ -21,7 +22,7 @@ namespace CVManagerapp.Controllers
             _userManager = userManager;
             _cvService = cvService;
         }
-
+        [Authorize(Roles = "admin,careeroffice")]
         public async Task<IActionResult> ListCVs(string? searchString, int page = 1)
         {
             const int PageSize = 5;
@@ -30,7 +31,7 @@ namespace CVManagerapp.Controllers
 
             return View(ViewModel);
         }
-
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Create(string studentId)
         {
             if (studentId.IsNullOrEmpty())
@@ -52,8 +53,8 @@ namespace CVManagerapp.Controllers
         }
 
 
-        
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CVCreateVM cVCreateVM)
@@ -76,7 +77,7 @@ namespace CVManagerapp.Controllers
         //todo add edit functionality
         //todo add delete functionality
         //todo add language list for languages and add issuing organization field
-
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Edit(string studentId)
         {
             if (studentId.IsNullOrEmpty())
@@ -97,7 +98,7 @@ namespace CVManagerapp.Controllers
 
 
 
-
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(CVEditVM vm)
@@ -110,7 +111,7 @@ namespace CVManagerapp.Controllers
             return RedirectToAction("Details", new { studentId = vm.UserId});
 
         }
-
+        [Authorize(Roles = "admin,careeroffice")]
         public async Task<IActionResult> Details(string studentId)
         {            
             var cvDetails = await _cvService.GetCVDetailsByStudentId(studentId);
@@ -123,7 +124,7 @@ namespace CVManagerapp.Controllers
 
             return View(cvDetails);
         }
-
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> Delete(string studentId)
         {
             if (studentId.IsNullOrEmpty())
@@ -137,7 +138,7 @@ namespace CVManagerapp.Controllers
             await _cvService.DeleteCV(cv);
             return RedirectToAction("ListCVs");
         }
-
+        [Authorize(Roles = "admin")]
         public async Task<JsonResult> AddEducation(EducationVM model)
         {
             if (!ModelState.IsValid)
@@ -160,8 +161,8 @@ namespace CVManagerapp.Controllers
             }
         }
 
-        
 
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<JsonResult> AddWorkExperience(WorkExperienceVM model)
         {
@@ -184,7 +185,7 @@ namespace CVManagerapp.Controllers
                 return Json(new { success = false, message = "An error occurred while adding work experienceId: " + ex.Message });
             }
         }
-
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<JsonResult> AddSkill(SkillVM model)
         {
@@ -207,7 +208,7 @@ namespace CVManagerapp.Controllers
                 return Json(new { success = false, message = "An error occurred while adding skill: " + ex.Message });
             }
         }
-
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<JsonResult> AddProject(ProjectVM model)
         {
@@ -230,7 +231,7 @@ namespace CVManagerapp.Controllers
                 return Json(new { success = false, message = "An error occurred while adding project: " + ex.Message });
             }
         }
-
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<JsonResult> AddCertification(CertificationVM model)
         {
@@ -253,7 +254,7 @@ namespace CVManagerapp.Controllers
                 return Json(new { success = false, message = "An error occurred while adding certification: " + ex.Message });
             }
         }
-
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<JsonResult> AddLanguage(LanguageVM model)
         {
@@ -276,7 +277,7 @@ namespace CVManagerapp.Controllers
                 return Json(new { success = false, message = "An error occurred while adding language: " + ex.Message });
             }
         }
-
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<JsonResult> AddInterest(InterestVM model)
         {
@@ -299,7 +300,7 @@ namespace CVManagerapp.Controllers
                 return Json(new { success = false, message = "An error occurred while adding interest: " + ex.Message });
             }
         }
-
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<JsonResult> EditEducation(EducationVM model)
         {
@@ -322,7 +323,7 @@ namespace CVManagerapp.Controllers
                 return Json(new { success = false, message = "An error occurred while updating education: " + ex.Message });
             }
         }
-
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<JsonResult> EditWorkExperience(WorkExperienceVM model)
         {
@@ -345,7 +346,7 @@ namespace CVManagerapp.Controllers
                 return Json(new { success = false, message = "An error occurred while updating Work Experience: " + ex.Message });
             }
         }
-
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<JsonResult> EditSkill(SkillVM model)
         {
@@ -368,7 +369,7 @@ namespace CVManagerapp.Controllers
                 return Json(new { success = false, message = "An error occurred while updating skill: " + ex.Message });
             }
         }
-
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<JsonResult> EditProject(ProjectVM model)
         {
@@ -391,7 +392,7 @@ namespace CVManagerapp.Controllers
                 return Json(new { success = false, message = "An error occurred while updating project: " + ex.Message });
             }
         }
-
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<JsonResult> EditCertification(CertificationVM model)
         {
@@ -414,7 +415,7 @@ namespace CVManagerapp.Controllers
                 return Json(new { success = false, message = "An error occurred while updating Certification: " + ex.Message });
             }
         }
-
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<JsonResult> EditLanguage(LanguageVM model)
         {
@@ -437,7 +438,7 @@ namespace CVManagerapp.Controllers
                 return Json(new { success = false, message = "An error occurred while updating Language: " + ex.Message });
             }
         }
-
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<JsonResult> EditInterest(InterestVM model)
         {
@@ -460,7 +461,7 @@ namespace CVManagerapp.Controllers
                 return Json(new { success = false, message = "An error occurred while updating Interest: " + ex.Message });
             }
         }
-
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<JsonResult> DeleteEducation(int id)
         {
@@ -474,7 +475,7 @@ namespace CVManagerapp.Controllers
                 return Json(new { success = false, message = "An error occurred while deleting education: " + ex.Message });
             }
         }
-
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<JsonResult> DeleteWorkExperience(int id)
         {
@@ -488,6 +489,7 @@ namespace CVManagerapp.Controllers
                 return Json(new { success = false, message = "An error occurred while deleting work experience: " + ex.Message });
             }
         }
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<JsonResult> DeleteSkill(int id)
         {
@@ -501,7 +503,7 @@ namespace CVManagerapp.Controllers
                 return Json(new { success = false, message = "An error occurred while deleting Skill: " + ex.Message });
             }
         }
-
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<JsonResult> DeleteProject(int id)
         {
@@ -515,6 +517,7 @@ namespace CVManagerapp.Controllers
                 return Json(new { success = false, message = "An error occurred while deleting Project: " + ex.Message });
             }
         }
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<JsonResult> DeleteCertification(int id)
         {
@@ -528,7 +531,7 @@ namespace CVManagerapp.Controllers
                 return Json(new { success = false, message = "An error occurred while deleting Certification: " + ex.Message });
             }
         }
-
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<JsonResult> DeleteLanguage(int id)
         {
@@ -542,6 +545,7 @@ namespace CVManagerapp.Controllers
                 return Json(new { success = false, message = "An error occurred while deleting Language: " + ex.Message });
             }
         }
+        [Authorize(Roles = "admin")]
         [HttpPost]
         public async Task<JsonResult> DeleteInterest(int id)
         {
