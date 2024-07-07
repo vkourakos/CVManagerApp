@@ -13,12 +13,12 @@ namespace CVManagerapp.Interfaces
         Task DeleteCV(CV cv);
         Task EditCV(CVEditVM cVEditVM);
         Task<int> AddEducationToCV(EducationVM educationVM);
-        Task AddWorkExperienceToCV(WorkExperienceVM workExperienceVM);
-        Task AddSkillToCV(SkillVM skillVM);
-        Task AddProjectToCV(ProjectVM projectVM);
-        Task AddCertificationToCV(CertificationVM certificationVM);
-        Task AddLanguageToCV(LanguageVM languageVM);
-        Task AddInterestToCV(InterestVM interestVM);
+        Task<int> AddWorkExperienceToCV(WorkExperienceVM workExperienceVM);
+        Task<int> AddSkillToCV(SkillVM skillVM);
+        Task<int> AddProjectToCV(ProjectVM projectVM);
+        Task<int> AddCertificationToCV(CertificationVM certificationVM);
+        Task<int> AddLanguageToCV(LanguageVM languageVM);
+        Task<int> AddInterestToCV(InterestVM interestVM);
         Task EditEducation(EducationVM educationVM);
         Task EditWorkExperience(WorkExperienceVM workExperienceVM);
         Task EditSkill(SkillVM skillVM);

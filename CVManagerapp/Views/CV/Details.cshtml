@@ -131,6 +131,7 @@
         <h4 style="margin-bottom: 0;">Work Experience</h4>
         <button class="btn btn-primary addRow" id="addWorkExperienceBtn" data-table-id="workExperienceTable" data-row-template-id="workExperienceRowTemplate">Add Work Experience</button>
     </div>
+    <input value="@Model.CV.Id" type="hidden" id="CVId" name="CVId" />
     <table id="workExperienceTable" class="table">
         <thead>
             <tr>
@@ -152,7 +153,17 @@
                     <td>@workexperience.StartDate.ToString("dd/MM/yyyy")</td>
                     <td>@workexperience.EndDate.ToString("dd/MM/yyyy")</td>
                     <td>@workexperience.Description</td>
-                    <td><i class="bi bi-pencil-square" style="cursor: pointer;"></i></td>
+                    <td><i class="bi bi-pencil-square addEditRow"
+                           style="cursor: pointer;"
+                           data-table-id="workExperienceTable"
+                           data-row-edit-template-id="workExperienceRowEditTemplate"
+                           data-id="@workexperience.Id"
+                           data-company="@workexperience.Company"
+                           data-position="@workexperience.Position"                           
+                           data-start-date="@workexperience.StartDate.ToString("yyyy-MM-dd")"
+                           data-end-date="@workexperience.EndDate.ToString("yyyy-MM-dd")"
+                           data-description="@workexperience.Description"></i>
+                    </td>
                 </tr>
             }
             @if (!Model.workexperiences.Any())
@@ -179,18 +190,33 @@
         </tr>
     </template>
 
+    <template id="workExperienceRowEditTemplate" style="display: none;">
+        <tr>
+            <td><input type="hidden" name="Id"><input type="text" name="Company" required></td>
+            <td><input type="text" name="Position" required></td>            
+            <td><input type="date" name="StartDate" required></td>
+            <td><input type="date" name="EndDate" required></td>
+            <td><input type="text" name="Description" required></td>
+            <td>
+                <i class="bi bi-floppy saveEditRow" data-edit-function="editWorkExperience" style="cursor: pointer; margin-right: 10px;"></i>
+                <i class="bi bi-x-circle-fill cancelEditRow" style="cursor: pointer;"></i>
+                <div class="validationErrors"></div>
+            </td>
+        </tr>
+    </template>
 </div>
+
 <div style="margin-bottom: 20px;">
     <div class="d-flex justify-content-between align-items-center">
         <h4 style="margin-bottom: 0;">Skills</h4>
         <button class="btn btn-primary addRow" id="addSkillBtn" data-table-id="skillTable" data-row-template-id="skillRowTemplate">Add Skill</button>
     </div>
+    <input value="@Model.CV.Id" type="hidden" id="CVId" name="CVId" />
     <table id="skillTable" class="table">
         <thead>
             <tr>
                 <th>Name</th>
                 <th>Action</th>
-
             </tr>
         </thead>
         <tbody>
@@ -198,13 +224,20 @@
             {
                 <tr>
                     <td>@skill.Name</td>
-                    <td><i class="bi bi-pencil-square" style="cursor: pointer;"></i></td>
+                    <td>
+                        <i class="bi bi-pencil-square addEditRow"
+                           style="cursor: pointer;"
+                           data-table-id="skillTable"
+                           data-row-edit-template-id="skillRowEditTemplate"
+                           data-id="@skill.Id"
+                           data-name="@skill.Name"></i>
+                    </td>
                 </tr>
             }
             @if (!Model.skills.Any())
             {
                 <tr id="noEntriesRow">
-                    <td colspan="5">No skills found.</td>
+                    <td colspan="2">No skills found.</td>
                 </tr>
             }
         </tbody>
@@ -216,16 +249,27 @@
                 <i class="bi bi-floppy saveRow" data-save-function="saveSkill" style="cursor: pointer; margin-right: 10px;"></i>
                 <i class="bi bi-x-circle-fill cancelRow" style="cursor: pointer;"></i>
                 <div class="validationErrors"></div>
-
+            </td>
+        </tr>
+    </template>
+    <template id="skillRowEditTemplate" style="display: none;">
+        <tr>
+            <td><input type="hidden" name="Id"><input type="text" name="Name" required></td>
+            <td>
+                <i class="bi bi-floppy saveEditRow" data-edit-function="editSkill" style="cursor: pointer; margin-right: 10px;"></i>
+                <i class="bi bi-x-circle-fill cancelEditRow" style="cursor: pointer;"></i>
+                <div class="validationErrors"></div>
             </td>
         </tr>
     </template>
 </div>
+
 <div style="margin-bottom: 20px;">
     <div class="d-flex justify-content-between align-items-center">
         <h4 style="margin-bottom: 0;">Projects</h4>
         <button class="btn btn-primary addRow" id="addProjectBtn" data-table-id="projectTable" data-row-template-id="projectRowTemplate">Add Project</button>
     </div>
+    <input value="@Model.CV.Id" type="hidden" id="CVId" name="CVId" />
     <table id="projectTable" class="table">
         <thead>
             <tr>
@@ -244,7 +288,17 @@
                     <td>@project.Description</td>
                     <td>@project.StartDate.ToString("dd/MM/yyyy")</td>
                     <td>@project.EndDate.ToString("dd/MM/yyyy")</td>
-                    <td><i class="bi bi-pencil-square" style="cursor: pointer;"></i></td>
+                    <td>
+                        <i class="bi bi-pencil-square addEditRow"
+                           style="cursor: pointer;"
+                           data-table-id="projectTable"
+                           data-row-edit-template-id="projectRowEditTemplate"
+                           data-id="@project.Id"
+                           data-title="@project.Title"
+                           data-description="@project.Description"
+                           data-start-date="@project.StartDate.ToString("yyyy-MM-dd")"
+                           data-end-date="@project.EndDate.ToString("yyyy-MM-dd")"></i>
+                    </td>
                 </tr>
             }
             @if (!Model.projects.Any())
@@ -265,7 +319,19 @@
                 <i class="bi bi-floppy saveRow" data-save-function="saveProject" style="cursor: pointer; margin-right: 10px;"></i>
                 <i class="bi bi-x-circle-fill cancelRow" style="cursor: pointer;"></i>
                 <div class="validationErrors"></div>
-
+            </td>
+        </tr>
+    </template>
+    <template id="projectRowEditTemplate" style="display: none;">
+        <tr>
+            <td><input type="hidden" name="Id"><input type="text" name="Title" required></td>
+            <td><input type="text" name="Description" required></td>
+            <td><input type="date" name="StartDate" required></td>
+            <td><input type="date" name="EndDate" required></td>
+            <td>
+                <i class="bi bi-floppy saveEditRow" data-edit-function="editProject" style="cursor: pointer; margin-right: 10px;"></i>
+                <i class="bi bi-x-circle-fill cancelEditRow" style="cursor: pointer;"></i>
+                <div class="validationErrors"></div>
             </td>
         </tr>
     </template>
@@ -275,7 +341,7 @@
         <h4 style="margin-bottom: 0;">Certifications</h4>
         <button class="btn btn-primary addRow" id="addCertificationBtn" data-table-id="certificationTable" data-row-template-id="certificationRowTemplate">Add Certification</button>
     </div>
-
+    <input value="@Model.CV.Id" type="hidden" id="CVId" name="CVId" />
     <table id="certificationTable" class="table">
         <thead>
             <tr>
@@ -292,13 +358,22 @@
                     <td>@certification.Name</td>
                     <td>@certification.IssueDate.ToString("dd/MM/yyyy")</td>
                     <td>@certification.IssuingOrganization</td>
-                    <td><i class="bi bi-pencil-square" style="cursor: pointer;"></i></td>
+                    <td>
+                        <i class="bi bi-pencil-square addEditRow"
+                           style="cursor: pointer;"
+                           data-table-id="certificationTable"
+                           data-row-edit-template-id="certificationRowEditTemplate"
+                           data-id="@certification.Id"
+                           data-name="@certification.Name"
+                           data-issue-date="@certification.IssueDate.ToString("yyyy-MM-dd")"
+                           data-issuing-organization="@certification.IssuingOrganization"></i>
+                    </td>
                 </tr>
             }
             @if (!Model.certifications.Any())
             {
                 <tr id="noEntriesRow">
-                    <td colspan="5">No certifications found.</td>
+                    <td colspan="4">No certifications found.</td>
                 </tr>
             }
         </tbody>
@@ -315,13 +390,25 @@
             </td>
         </tr>
     </template>
+    <template id="certificationRowEditTemplate" style="display: none;">
+        <tr>
+            <td><input type="hidden" name="Id"><input type="text" name="Name" required></td>
+            <td><input type="date" name="IssueDate" required></td>
+            <td><input type="text" name="IssuingOrganization" required></td>
+            <td>
+                <i class="bi bi-floppy saveEditRow" data-edit-function="editCertification" style="cursor: pointer; margin-right: 10px;"></i>
+                <i class="bi bi-x-circle-fill cancelEditRow" style="cursor: pointer;"></i>
+                <div class="validationErrors"></div>
+            </td>
+        </tr>
+    </template>
 </div>
 <div style="margin-bottom: 20px;">
     <div class="d-flex justify-content-between align-items-center">
         <h4 style="margin-bottom: 0;">Languages</h4>
         <button class="btn btn-primary addRow" id="addLanguageBtn" data-table-id="languageTable" data-row-template-id="languageRowTemplate">Add Language</button>
     </div>
-
+    <input value="@Model.CV.Id" type="hidden" id="CVId" name="CVId" />
     <table id="languageTable" class="table">
         <thead>
             <tr>
@@ -336,13 +423,21 @@
                 <tr>
                     <td>@language.Name</td>
                     <td>@language.ProficiencyLevel</td>
-                    <td><i class="bi bi-pencil-square" style="cursor: pointer;"></i></td>
+                    <td>
+                        <i class="bi bi-pencil-square addEditRow"
+                           style="cursor: pointer;"
+                           data-table-id="languageTable"
+                           data-row-edit-template-id="languageRowEditTemplate"
+                           data-id="@language.Id"
+                           data-name="@language.Name"
+                           data-proficiency-level="@language.ProficiencyLevel"></i>
+                    </td>
                 </tr>
             }
             @if (!Model.languages.Any())
             {
                 <tr id="noEntriesRow">
-                    <td colspan="5">No languages found.</td>
+                    <td colspan="3">No languages found.</td>
                 </tr>
             }
         </tbody>
@@ -358,12 +453,24 @@
             </td>
         </tr>
     </template>
+    <template id="languageRowEditTemplate" style="display: none;">
+        <tr>
+            <td><input type="hidden" name="Id"><input type="text" name="Name" required></td>
+            <td><input type="text" name="ProficiencyLevel" required></td>
+            <td>
+                <i class="bi bi-floppy saveEditRow" data-edit-function="editLanguage" style="cursor: pointer; margin-right: 10px;"></i>
+                <i class="bi bi-x-circle-fill cancelEditRow" style="cursor: pointer;"></i>
+                <div class="validationErrors"></div>
+            </td>
+        </tr>
+    </template>
 </div>
 <div style="margin-bottom: 20px;">
     <div class="d-flex justify-content-between align-items-center">
         <h4 style="margin-bottom: 0;">Interests</h4>
         <button class="btn btn-primary addRow" id="addInterestBtn" data-table-id="interestTable" data-row-template-id="interestRowTemplate">Add Interest</button>
     </div>
+    <input value="@Model.CV.Id" type="hidden" id="CVId" name="CVId" />
     <table id="interestTable" class="table">
         <thead>
             <tr>
@@ -376,13 +483,20 @@
             {
                 <tr>
                     <td>@interest.Name</td>
-                    <td><i class="bi bi-pencil-square" style="cursor: pointer;"></i></td>
+                    <td>
+                        <i class="bi bi-pencil-square addEditRow"
+                           style="cursor: pointer;"
+                           data-table-id="interestTable"
+                           data-row-edit-template-id="interestRowEditTemplate"
+                           data-id="@interest.Id"
+                           data-name="@interest.Name"></i>
+                    </td>
                 </tr>
             }
             @if (!Model.interests.Any())
             {
                 <tr id="noEntriesRow">
-                    <td colspan="5">No interest entries found.</td>
+                    <td colspan="2">No interest entries found.</td>
                 </tr>
             }
         </tbody>
@@ -397,7 +511,18 @@
             </td>
         </tr>
     </template>
+    <template id="interestRowEditTemplate" style="display: none;">
+        <tr>
+            <td><input type="hidden" name="Id"><input type="text" name="Name" required></td>
+            <td>
+                <i class="bi bi-floppy saveEditRow" data-edit-function="editInterest" style="cursor: pointer; margin-right: 10px;"></i>
+                <i class="bi bi-x-circle-fill cancelEditRow" style="cursor: pointer;"></i>
+                <div class="validationErrors"></div>
+            </td>
+        </tr>
+    </template>
 </div>
+
 
 
 

@@ -65,6 +65,7 @@ namespace CVManagerapp.ViewModels
 
     public class WorkExperienceVM
     {
+        public int Id { get; set; }
         [Required(ErrorMessage = "Company is required")]
         [StringLength(300)]
         public string Company { get; set; }
@@ -87,6 +88,7 @@ namespace CVManagerapp.ViewModels
     }
     public class SkillVM
     {
+        public int Id { get; set; }
         [Required(ErrorMessage = "Name is required")]
         [StringLength(300)]
         public string Name { get; set; }
@@ -94,6 +96,7 @@ namespace CVManagerapp.ViewModels
     }
     public class ProjectVM
     {
+        public int Id { get; set; }
         [Required(ErrorMessage = "Title is required")]
         [StringLength(300)]
         public string Title { get; set; }
@@ -114,6 +117,7 @@ namespace CVManagerapp.ViewModels
 
     public class CertificationVM
     {
+        public int Id { get; set; }
         [Required(ErrorMessage = "name is required")]
         [StringLength(300)]
         public string Name { get; set; }
@@ -130,6 +134,7 @@ namespace CVManagerapp.ViewModels
     }
     public class LanguageVM
     {
+        public int Id { get; set; }
         [Required(ErrorMessage = "Name is required")]
         [StringLength(300)]
         public string Name { get; set; }
@@ -141,6 +146,7 @@ namespace CVManagerapp.ViewModels
     }
     public class InterestVM
     {
+        public int Id { get; set; }
         [Required(ErrorMessage = "Name is required")]
         [StringLength(300)]
         public string Name { get; set; }

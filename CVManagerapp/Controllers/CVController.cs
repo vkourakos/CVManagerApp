@@ -4,6 +4,7 @@ using CVManagerapp.Models;
 using CVManagerapp.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
@@ -167,20 +168,20 @@ namespace CVManagerapp.Controllers
             if (!ModelState.IsValid)
             {
                 var errors = ModelState.Values.SelectMany(v => v.Errors)
-                                       .Select(e => e.ErrorMessage)
-                                       .ToList();
+                                           .Select(e => e.ErrorMessage)
+                                           .ToList();
                 return Json(new { success = false, errors = errors });
             }
 
             try
             {
-                await _cvService.AddWorkExperienceToCV(model);
+                var workExperienceId = await _cvService.AddWorkExperienceToCV(model);
 
-                return Json(new { success = true, message = "Work Experience added successfully" });
+                return Json(new { success = true, id = workExperienceId, message = "Work experience added successfully" });
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = "An error occurred while adding Work Experience: " + ex.Message });
+                return Json(new { success = false, message = "An error occurred while adding work experienceId: " + ex.Message });
             }
         }
 
@@ -190,16 +191,16 @@ namespace CVManagerapp.Controllers
             if (!ModelState.IsValid)
             {
                 var errors = ModelState.Values.SelectMany(v => v.Errors)
-                                       .Select(e => e.ErrorMessage)
-                                       .ToList();
+                                           .Select(e => e.ErrorMessage)
+                                           .ToList();
                 return Json(new { success = false, errors = errors });
             }
 
             try
             {
-                await _cvService.AddSkillToCV(model);
+                var skillId = await _cvService.AddSkillToCV(model);
 
-                return Json(new { success = true, message = "Skill added successfully" });
+                return Json(new { success = true, id = skillId, message = "Skill added successfully" });
             }
             catch (Exception ex)
             {
@@ -213,16 +214,16 @@ namespace CVManagerapp.Controllers
             if (!ModelState.IsValid)
             {
                 var errors = ModelState.Values.SelectMany(v => v.Errors)
-                                       .Select(e => e.ErrorMessage)
-                                       .ToList();
+                                           .Select(e => e.ErrorMessage)
+                                           .ToList();
                 return Json(new { success = false, errors = errors });
             }
 
             try
             {
-                await _cvService.AddProjectToCV(model);
+                var projectId = await _cvService.AddProjectToCV(model);
 
-                return Json(new { success = true, message = "Project added successfully" });
+                return Json(new { success = true, id = projectId, message = "Project added successfully" });
             }
             catch (Exception ex)
             {
@@ -236,20 +237,20 @@ namespace CVManagerapp.Controllers
             if (!ModelState.IsValid)
             {
                 var errors = ModelState.Values.SelectMany(v => v.Errors)
-                                       .Select(e => e.ErrorMessage)
-                                       .ToList();
+                                           .Select(e => e.ErrorMessage)
+                                           .ToList();
                 return Json(new { success = false, errors = errors });
             }
 
             try
             {
-                await _cvService.AddCertificationToCV(model);
+                var certificationId = await _cvService.AddCertificationToCV(model);
 
-                return Json(new { success = true, message = "Certification added successfully" });
+                return Json(new { success = true, id = certificationId, message = "Certification added successfully" });
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = "An error occurred while adding Certification: " + ex.Message });
+                return Json(new { success = false, message = "An error occurred while adding certification: " + ex.Message });
             }
         }
 
@@ -259,20 +260,20 @@ namespace CVManagerapp.Controllers
             if (!ModelState.IsValid)
             {
                 var errors = ModelState.Values.SelectMany(v => v.Errors)
-                                       .Select(e => e.ErrorMessage)
-                                       .ToList();
+                                           .Select(e => e.ErrorMessage)
+                                           .ToList();
                 return Json(new { success = false, errors = errors });
             }
 
             try
             {
-                await _cvService.AddLanguageToCV(model);
+                var languageId = await _cvService.AddLanguageToCV(model);
 
-                return Json(new { success = true, message = "Language added successfully" });
+                return Json(new { success = true, id = languageId, message = "Language added successfully" });
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = "An error occurred while adding Language: " + ex.Message });
+                return Json(new { success = false, message = "An error occurred while adding language: " + ex.Message });
             }
         }
 
@@ -282,20 +283,20 @@ namespace CVManagerapp.Controllers
             if (!ModelState.IsValid)
             {
                 var errors = ModelState.Values.SelectMany(v => v.Errors)
-                                       .Select(e => e.ErrorMessage)
-                                       .ToList();
+                                           .Select(e => e.ErrorMessage)
+                                           .ToList();
                 return Json(new { success = false, errors = errors });
             }
 
             try
             {
-                await _cvService.AddInterestToCV(model);
+                var interestId = await _cvService.AddInterestToCV(model);
 
-                return Json(new { success = true, message = "Interest added successfully" });
+                return Json(new { success = true, id = interestId, message = "Interest added successfully" });
             }
             catch (Exception ex)
             {
-                return Json(new { success = false, message = "An error occurred while adding Interest: " + ex.Message });
+                return Json(new { success = false, message = "An error occurred while adding interest: " + ex.Message });
             }
         }
 

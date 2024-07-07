@@ -17,7 +17,7 @@ namespace CVManagerapp.Implementations
             _db = db;
         }
 
-        public async Task AddCertificationToCV(CertificationVM certificationVM)
+        public async Task<int> AddCertificationToCV(CertificationVM certificationVM)
         {
             var certification = new Certification
             {
@@ -28,6 +28,7 @@ namespace CVManagerapp.Implementations
             };
             await _db.Certifications.AddAsync(certification);
             await _db.SaveChangesAsync();
+            return certification.Id;
         }
 
         public async Task<int> AddEducationToCV(EducationVM educationVM)
@@ -46,7 +47,7 @@ namespace CVManagerapp.Implementations
             return education.Id;
         }
 
-        public async Task AddInterestToCV(InterestVM interestVM)
+        public async Task<int> AddInterestToCV(InterestVM interestVM)
         {
             var interest = new Interest
             {
@@ -55,9 +56,10 @@ namespace CVManagerapp.Implementations
             };
             await _db.Interests.AddAsync(interest);
             await _db.SaveChangesAsync();
+            return interest.Id;
         }
 
-        public async Task AddLanguageToCV(LanguageVM languageVM)
+        public async Task<int> AddLanguageToCV(LanguageVM languageVM)
         {
             var language = new Language
             {
@@ -67,9 +69,10 @@ namespace CVManagerapp.Implementations
             };
             await _db.Languages.AddAsync(language);
             await _db.SaveChangesAsync();
+            return language.Id;
         }
 
-        public async Task AddProjectToCV(ProjectVM projectVM)
+        public async Task<int> AddProjectToCV(ProjectVM projectVM)
         {
             var project = new Project
             {
@@ -81,9 +84,10 @@ namespace CVManagerapp.Implementations
             };
             await _db.Projects.AddAsync(project);
             await _db.SaveChangesAsync();
+            return project.Id;
         }
 
-        public async Task AddSkillToCV(SkillVM skillVM)
+        public async Task<int> AddSkillToCV(SkillVM skillVM)
         {
             var skill = new Skill
             {
@@ -92,9 +96,10 @@ namespace CVManagerapp.Implementations
             };
             await _db.Skills.AddAsync(skill);
             await _db.SaveChangesAsync();
+            return skill.Id;
         }
 
-        public async Task AddWorkExperienceToCV(WorkExperienceVM workExperienceVM)
+        public async Task<int> AddWorkExperienceToCV(WorkExperienceVM workExperienceVM)
         {
             var workExperience = new WorkExperience
             {
@@ -107,6 +112,7 @@ namespace CVManagerapp.Implementations
             };
             await _db.WorkExperiences.AddAsync(workExperience);
             await _db.SaveChangesAsync();
+            return workExperience.Id;
         }
 
         public async Task CreateCV(CVCreateVM cVCreateVM, ApplicationUser user)
@@ -135,7 +141,16 @@ namespace CVManagerapp.Implementations
 
         public async Task EditCertification(CertificationVM certificationVM)
         {
-            throw new NotImplementedException();
+            var certification = await _db.Certifications.FindAsync(certificationVM.Id);
+            if (certification == null) return;
+
+            certification.Name = certificationVM.Name;
+            certification.IssueDate = certificationVM.IssueDate;
+            certification.IssuingOrganization = certificationVM.IssuingOrganization;
+
+            _db.Certifications.Update(certification);
+            await _db.SaveChangesAsync();
+
         }
 
         public async Task EditCV(CVEditVM vm)
@@ -171,27 +186,70 @@ namespace CVManagerapp.Implementations
 
         public async Task EditInterest(InterestVM interestVM)
         {
-            throw new NotImplementedException();
+            var interest = await _db.Interests.FindAsync(interestVM.Id);
+            if (interest == null) return;
+
+            interest.Name = interestVM.Name;
+
+            _db.Interests.Update(interest);
+            await _db.SaveChangesAsync();
+
         }
 
         public async Task EditLanguage(LanguageVM languageVM)
         {
-            throw new NotImplementedException();
+            var language = await _db.Languages.FindAsync(languageVM.Id);
+            if (language == null) return;
+
+            language.Name = languageVM.Name;
+            language.ProficiencyLevel = languageVM.ProficiencyLevel;
+
+            _db.Languages.Update(language);
+            await _db.SaveChangesAsync();
+
         }
 
         public async Task EditProject(ProjectVM projectVM)
         {
-            throw new NotImplementedException();
+            var project = await _db.Projects.FindAsync(projectVM.Id);
+            if (project == null) return;
+
+            project.Title = projectVM.Title;
+            project.Description = projectVM.Description;
+            project.StartDate = projectVM.StartDate.Date;
+            project.EndDate = projectVM.EndDate.Date;
+
+            _db.Projects.Update(project);
+            await _db.SaveChangesAsync();
+
         }
 
         public async Task EditSkill(SkillVM skillVM)
         {
-            throw new NotImplementedException();
+            var skill = await _db.Skills.FindAsync(skillVM.Id);
+            if (skill == null) return;
+
+            skill.Name = skillVM.Name;
+
+            _db.Skills.Update(skill);
+            await _db.SaveChangesAsync();
+
         }
 
         public async Task EditWorkExperience(WorkExperienceVM workExperienceVM)
         {
-            throw new NotImplementedException();
+            var workExperience = await _db.WorkExperiences.FindAsync(workExperienceVM.Id);
+            if (workExperience == null) return;
+
+            workExperience.Company = workExperienceVM.Company;
+            workExperience.Position = workExperienceVM.Position;
+            workExperience.Description = workExperienceVM.Description;
+            workExperience.StartDate = workExperienceVM.StartDate.Date;
+            workExperience.EndDate = workExperienceVM.EndDate.Date;
+
+            _db.WorkExperiences.Update(workExperience);
+            await _db.SaveChangesAsync();
+
         }
 
         public async Task<CV>? GetCVByStudentId(string studentId)
@@ -229,6 +287,7 @@ namespace CVManagerapp.Implementations
                     }).ToList(),
                     workexperiences = c.WorkExperiences.Select(e => new WorkExperienceVM
                     {
+                        Id = e.Id,
                         Company = e.Company,
                         Position = e.Position,
                         StartDate = e.StartDate,
@@ -237,10 +296,12 @@ namespace CVManagerapp.Implementations
                     }).ToList(),
                     skills = c.Skills.Select(e => new SkillVM
                     {
+                        Id = e.Id,
                         Name = e.Name
                     }).ToList(),
                     projects = c.Projects.Select(e => new ProjectVM
                     {
+                        Id = e.Id,
                         Title = e.Title,
                         Description = e.Description,
                         StartDate = e.StartDate,
@@ -248,17 +309,20 @@ namespace CVManagerapp.Implementations
                     }).ToList(),
                     certifications = c.Certifications.Select(e => new CertificationVM
                     {
+                        Id = e.Id,
                         Name = e.Name,
                         IssueDate = e.IssueDate,
                         IssuingOrganization = e.IssuingOrganization,
                     }).ToList(),
                     languages = c.Languages.Select(e => new LanguageVM
                     {
+                        Id = e.Id,
                         Name = e.Name,
                         ProficiencyLevel = e.ProficiencyLevel
                     }).ToList(),
                     interests = c.Interests.Select(e => new InterestVM
                     {
+                        Id = e.Id,
                         Name = e.Name
                     }).ToList(),
                 })
